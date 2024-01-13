@@ -25,6 +25,10 @@ body {
 
 /*Login page*/
 form.login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -54,21 +58,25 @@ form.login div.otherActions {
 form.login button {
   width: 100%;
 }
+/* end login page */
+
+/* Navigation bar */
 .navigation {
   position: fixed;
-  width: 300px;
-  height: 100%;
   top: 0;
-  background: var(--blue);
-  border-left: 10px solid var(--blue);
-  transition: 0.5s;
-  overflow: hidden;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--blue);
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.navigation.open {
+  left: 0;
 }
 
 .navigation ul {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
 }
 
@@ -76,31 +84,12 @@ form.login button {
   position: relative;
   width: 100%;
   list-style: none;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
-}
-
-.navigation ul li:hover {
   background: var(--white);
 }
 
 .navigation ul li:nth-child(1) {
   margin-bottom: 40px;
   pointer-events: none;
-}
-
-.navigation ul li:last-child {
-  background: red;
-  position: absolute;
-  top: 5px;
-  left: 210px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
 }
 
 .navigation ul li a {
@@ -111,7 +100,8 @@ form.login button {
   color: var(--white);
 }
 
-.navigation ul li:hover a {
+.navigation ul li a:hover,
+.navigation ul li a.active {
   color: var(--blue);
 }
 
@@ -135,4 +125,18 @@ form.login button {
   height: 60px;
   line-height: 60px;
   text-align: start;
+}
+
+button.toggle {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: var(--blue);
+  top: 0;
+  left: 250px;
+  width: 30px;
+  border-radius: 0;
 }
