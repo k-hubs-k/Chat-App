@@ -1,3 +1,5 @@
+import "../css/App.css";
+import "../css/index.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
@@ -18,35 +20,37 @@ const SignIn = () => {
   };
 
   return (
-    <form method="post" onSubmit={() => handleSubmit} className="login">
-      <h1>Welcome back</h1>
-      <TextField
-        className="field"
-        id="outlined-basic"
-        required
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        label="Username"
-        variant="outlined"
-      />
-      <TextField
-        className="field"
-        id="outlined-basic"
-        required
-        value={password}
-        onChange={(e) => setPassord(e.target.value)}
-        type="password"
-        label="Password"
-        variant="outlined"
-      />
-      <div className="otherActions">
-        <a href="#">Do not have account</a>
-        <a href="#">Forgot Password</a>
-      </div>
-      <Button variant="contained" type="submit">
-        Sign In
-      </Button>
-    </form>
+    <div className="container">
+      <form method="post" onSubmit={() => handleSubmit} className="login">
+        <h1>Welcome back</h1>
+        <TextField
+          className="field"
+          id="outlined-basic"
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          label="Username"
+          variant="outlined"
+        />
+        <TextField
+          className="field"
+          id="outlined-basic"
+          required
+          value={password}
+          onChange={(e) => setPassord(e.target.value)}
+          type="password"
+          label="Password"
+          variant="outlined"
+        />
+        <div className="otherActions">
+          <a href="#">Do not have account</a>
+          <a href="#">Forgot Password</a>
+        </div>
+        <Button variant="contained" type="submit">
+          Sign In
+        </Button>
+      </form>
+    </div>
   );
 };
 

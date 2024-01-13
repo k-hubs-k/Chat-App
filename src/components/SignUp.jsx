@@ -1,3 +1,5 @@
+import "../css/App.css";
+import "../css/index.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
@@ -26,6 +28,7 @@ const SignUp = () => {
   };
 
   return (
+    <div className="container">
     <form method="post" onSubmit={handleSubmit} className="login">
       <h1>Register</h1>
       <TextField
@@ -73,7 +76,8 @@ const SignUp = () => {
       <Button type="submit" variant="contained">
         Register
       </Button>
-    </form>
+      </form>
+    </div>
   );
 };
 
