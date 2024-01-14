@@ -21,14 +21,21 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
+  width: 100%;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 /*Login page*/
 form.login {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -84,12 +91,7 @@ form.login button {
   position: relative;
   width: 100%;
   list-style: none;
-  background: var(--white);
-}
-
-.navigation ul li:nth-child(1) {
-  margin-bottom: 40px;
-  pointer-events: none;
+  transition: background 0.3s ease-in-out;
 }
 
 .navigation ul li a {
@@ -98,11 +100,13 @@ form.login button {
   display: flex;
   text-decoration: none;
   color: var(--white);
+  transition: 0.3s ease-in-out;
 }
 
 .navigation ul li a:hover,
 .navigation ul li a.active {
   color: var(--blue);
+  background: var(--white);
 }
 
 .navigation ul li a .icon {
