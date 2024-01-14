@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -43,8 +44,8 @@ const SignIn = () => {
           variant="outlined"
         />
         <div className="otherActions">
-          <a href="#">Do not have account</a>
-          <a href="#">Forgot Password</a>
+          <NavLink to="/authentification/signUp">Do not have account</NavLink>
+          <NavLink>Forgot Password</NavLink>
         </div>
         <Button variant="contained" type="submit">
           Sign In

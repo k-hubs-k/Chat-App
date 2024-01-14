@@ -30,7 +30,7 @@ const NavBar = () => {
       <ul>
         {links.map((item, key) => {
           return (
-            <li key={key}>
+            <li key={key} onClick={toggle}>
               <NavLink to={item.to}>
                 <span className="icon">{item.component}</span>
                 <span className="title">{item.name}</span>

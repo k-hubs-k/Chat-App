@@ -4,6 +4,12 @@ import Home from "./components/Home";
 import NavBar from "./components/NavBar";
 
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import Chat from "./components/Chat";
+import Settings from "./components/Settings";
+import Search from "./components/Search";
+import Profile from "./components/Profile";
+import LogOut from "./components/LogOut";
+import MainMenu from "./components/MainMenu";
 
 const Root = () => {
   return (
@@ -11,6 +17,15 @@ const Root = () => {
       <NavBar />
       <Outlet />
     </div>
+  );
+};
+
+const WelcomePage = () => {
+  return (
+    <>
+      <MainMenu />
+      <Outlet />
+    </>
   );
 };
 
@@ -25,45 +40,43 @@ const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element: <Home />,
-      },
-      {
-        path: "search",
-        element: <Home />,
+        element: <Chat />,
       },
       {
         path: "settings",
-        element: <Home />,
+        element: <Settings />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
       {
         path: "profile",
-        element: <Home />,
+        element: <Profile />,
       },
       {
         path: "logout",
-        element: <Home />,
+        element: <LogOut />,
+      },
+    ],
+  },
+  {
+    path: "authentification",
+    element: <Outlet />,
+    children: [
+      {
+        path: "signIn",
+        element: <SignIn />,
+      },
+      {
+        path: "signUp",
+        element: <SignUp />,
       },
     ],
   },
   {
     path: "/",
-    element: <Outlet />,
-    children: [
-      {
-        path: "authentification",
-        element: <Outlet />,
-        children: [
-          {
-            path: "signIn",
-            element: <SignIn />,
-          },
-          {
-            path: "signUp",
-            element: <SignUp />,
-          },
-        ],
-      },
-    ],
+    element: <WelcomePage />,
   },
 ]);
 
