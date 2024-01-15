@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #287bff;
+  --white: #fff;
+  --grey: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+body {
+  max-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/*Login page*/
+form.login {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 400px;
+}
+
+form.login div.field {
+  width: 100%;
+}
+
+form.login div.field input,
+form.login dif.field span {
+  color: white !important;
+}
+
+form.login div.otherActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form.login button {
+  width: 100%;
+}
+/* end login page */
+
+/* Navigation bar */
+.navigation {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--blue);
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.navigation.open {
+  left: 0;
+}
+
+.navigation ul {
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.navigation ul li a {
+  position: relative;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+  transition: 0.3s ease-in-out;
+}
+
+.navigation ul li a:hover,
+.navigation ul li a.active {
+  color: var(--blue);
+  background: var(--white);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 70px;
+  text-align: center;
+}
+
+.navigation ul li a .icon svg {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+}
+
+button.toggle {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: var(--blue);
+  top: 0;
+  left: 250px;
+  width: 30px;
+  border-radius: 0;
+}
