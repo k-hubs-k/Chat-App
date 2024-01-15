@@ -4,29 +4,33 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassord] = useState("");
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // First of all, change serverUrl to the correct server url
     axios
-      .post("serverUrl", { username, password })
-      .then((res) => console.log(res))
+      .get("http://localhost:8081/")
+      .then((res) => {
+        console.log(res)
+        //asina condition hoe: ref marina ilay authentif...
+        navigate('/chatApp/chat');
+      })
       .catch((err) => console.log(err));
   };
 
   return (
     <div className="container">
-      <form method="post" onSubmit={() => handleSubmit} className="login">
+      <form onSubmit={handleSubmit} className="login">
         <h1>Welcome back</h1>
         <TextField
           className="field"
-          id="outlined-basic"
           required
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -35,7 +39,6 @@ const SignIn = () => {
         />
         <TextField
           className="field"
-          id="outlined-basic"
           required
           value={password}
           onChange={(e) => setPassord(e.target.value)}
