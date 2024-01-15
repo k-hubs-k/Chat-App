@@ -16,11 +16,10 @@ const SignIn = () => {
 
     // First of all, change serverUrl to the correct server url
     axios
-      .get("http://localhost:8081/")
+      .get("http://localhost:8081/login", {username, password})
       .then((res) => {
-        console.log(res)
-        //asina condition hoe: ref marina ilay authentif...
-        navigate('/chatApp/chat');
+        console.log(res.data)
+        navigate('/chatApp/chat')
       })
       .catch((err) => console.log(err));
   };

@@ -4,13 +4,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,8 +22,11 @@ const SignUp = () => {
 
     // First of all, change serverUrl to the correct server url
     axios
-      .post("http://localhost:8081/users", { username, email, password })
-      .then((res) => console.log(res))
+      .post("http://localhost:8081/users", {username, email, password})
+      .then((res) => {
+        console.log(res)
+        navigate('/chatApp/chat');
+      })
       .catch((err) => console.log(err));
 
     console.log(username, email, password, confirm);
@@ -34,7 +38,6 @@ const SignUp = () => {
         <h1>Register</h1>
         <TextField
           className="field"
-          id="outlined-basic"
           required
           onChange={(e) => setUsername(e.target.value)}
           value={username}
@@ -43,7 +46,6 @@ const SignUp = () => {
         />
         <TextField
           className="field"
-          id="outlined-basic"
           required
           onChange={(e) => setEmail(e.target.value)}
           value={email}
@@ -53,7 +55,6 @@ const SignUp = () => {
         />
         <TextField
           className="field"
-          id="outlined-basic"
           required
           onChange={(e) => setPassword(e.target.value)}
           value={password}
@@ -63,7 +64,6 @@ const SignUp = () => {
         />
         <TextField
           className="field"
-          id="outlined-basic"
           required
           onChange={(e) => setConfirm(e.target.value)}
           value={confirm}

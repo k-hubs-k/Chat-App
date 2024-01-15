@@ -1,6 +1,8 @@
 const express = require("express")
 const mysql = require("mysql")
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
+
 require("dotenv").config()
 
 const app = express()
@@ -24,9 +26,33 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/students', (req, res) => {
-    const sql = "INSERT INTO students (`username`,`email`,`password`) VALUES (?)"
+// ------------------------ mbl ts mety ------------------------------
+
+app.get('/login', (req, res) => {
+    const sql = "SELECT * FROM users WHERE `username` = ? AND `password` = ?";
+    const values = [
+        req.body.username,
+        req.body.password
+    ]
     console.log(req.body);
+    db.query(sql, values, (err, data) => {
+        if (err) {
+            return res.json("Erreur")
+        }
+        if (data.length > 0) {
+            const id = data[0].id
+            const token = jwt.sign({id}, "jwtSecretkey", {expiresIn: 300})
+            return res.json({Login: true, token, data})
+        } else {
+            return res.json("Faile")
+        }
+    })
+})
+
+// ---------------------------------------------
+
+app.post('/users', (req, res) => {
+    const sql = "INSERT INTO users (`username`,`email`,`password`) VALUES (?)"
     const values = [
         req.body.username,
         req.body.email,
@@ -38,7 +64,7 @@ app.post('/students', (req, res) => {
     })
 })
 
-app.get('/read/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
     const sql = "SELECT * FROM users WHERE id = ?"
     const id = req.params.id
     db.query(sql, [id], (erreur, resultat) => {
@@ -47,14 +73,14 @@ app.get('/read/:id', (req, res) => {
     })
 })
 
-app.put('/update/:id', (req, res) => {
-    const sql = 'UPDATE students SET `name=?`, `email=?`, `password` WHERE id=?'
-    const id = req.params.id
-    db.query(sql, [req.body.name, req.body.email, id], (err, resultat) => {
-        if (erreur) return res.json({Message: "Erreur inside server"})
-        return res.json(resultat)
-    })
-})
+// app.put('/update/:id', (req, res) => {
+//     const sql = 'UPDATE students SET `name=?`, `email=?`, `password` WHERE id=?'
+//     const id = req.params.id
+//     db.query(sql, [req.body.name, req.body.email, id], (err, resultat) => {
+//         if (erreur) return res.json({Message: "Erreur inside server"})
+//         return res.json(resultat)
+//     })
+// })
 
 app.listen(PORT, () => {
     console.log(`le serveur est lancer sur le port ${PORT}`);
