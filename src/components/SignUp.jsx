@@ -11,25 +11,30 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
       alert("Check your password and try again");
+      return;
     }
 
     // First of all, change serverUrl to the correct server url
     axios
-      .post("http://localhost:8081/users", {username, email, password})
+      .post("http://localhost:8081/users", { username, email, password })
       .then((res) => {
-        console.log(res)
-        navigate('/chatApp/chat');
+        const data = res.data;
+        alert("Resistered succesfully. Go to login page now...");
+        if (data.Succes) navigate("/chatApp/chat");
+        else if (data.Error) {
+          alert("Error : ", data.Error);
+        } else {
+          alert("Warning : " + data.Warning);
+        }
       })
       .catch((err) => console.log(err));
-
-    console.log(username, email, password, confirm);
   };
 
   return (

@@ -48,15 +48,16 @@ form.login {
 }
 
 form.login div.field {
+  color: var(--white);
   width: 100%;
 }
 
-form.login dif.field span {
-  color: white !important;
+form.login div.field label {
+  color: var(--black2);
 }
 
 form.login div.field input {
-  color: var(--black1) !important;
+  color: var(--white) !important;
 }
 
 form.login div.otherActions {
@@ -147,4 +148,18 @@ button.toggle {
   left: 250px;
   width: 30px;
   border-radius: 0;
+}
+
+.LogOut {
+  padding: 30px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.LogOut .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

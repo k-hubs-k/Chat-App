@@ -6,20 +6,22 @@ import { useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 
+axios.defaults.withCredentials = true;
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassord] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // First of all, change serverUrl to the correct server url
     axios
-      .get("http://localhost:8081/login", {username, password})
+      .post("http://localhost:8081/login", { username, password })
       .then((res) => {
-        console.log(res.data)
-        navigate('/chatApp/chat')
+        const response = res.data;
+        if (response.Succes) navigate("/chatApp/chat");
+        if (response.Error) alert(response.Error);
       })
       .catch((err) => console.log(err));
   };
