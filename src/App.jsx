@@ -13,6 +13,7 @@ import Chat from "./components/Chat";
 import Settings from "./components/Settings";
 import Search from "./components/Search";
 import Profile from "./components/Profile";
+import EditProfil from "./components/EditProfil";
 import LogOut from "./components/LogOut";
 import MainMenu from "./components/MainMenu";
 
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "editprofil",
+        element: <EditProfil />,
       },
       {
         path: "logout",

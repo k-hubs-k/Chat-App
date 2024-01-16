@@ -33,8 +33,8 @@ app.use(
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "hubs",
-  password: "hubs",
+  user: "root",
+  password: "",
   database: "chatapp",
 });
 
@@ -69,7 +69,7 @@ app.post("/login", (req, res) => {
       });
     }
     if (data.length > 0) {
-      req.session.username = data[0].username;
+      req.session.username = data[0].id;
       console.log(req.session.username);
       return res.json({
         Succes: "Connected...",
@@ -108,10 +108,10 @@ app.post("/users", (req, res) => {
   });
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/profil/:id", (req, res) => {
   const sql = "SELECT * FROM users WHERE id = ?";
   const id = req.params.id;
-  db.query(sql, [id], (erreur, resultat) => {
+  db.query(sql, [req.session.username], (erreur, resultat) => {
     if (erreur) return res.json({ Message: "Erreur inside server" });
     return res.json(resultat);
   });
