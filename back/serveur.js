@@ -33,8 +33,8 @@ app.use(
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "",
+  user: "hubs",
+  password: "hubs",
   database: "chatapp",
 });
 

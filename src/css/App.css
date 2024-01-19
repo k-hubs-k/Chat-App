@@ -9,8 +9,13 @@
   --white: #fff;
   --grey: #f5f5f5;
   --black1: #222;
+  --orange: #f2aa1e;
+  --red: #dd614a;
+  --green: #06a77d;
   --black2: #999;
-  --shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  --shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
 body {
@@ -167,8 +172,8 @@ button.toggle {
   gap: 20px;
 }
 
-.profilImg{
-  background-image: url('../assets/fdl.jpg');
+.profilImg {
+  background-image: url("../assets/fdl.jpg");
   background-position: center;
   background-size: cover;
   position: absolute;
@@ -179,56 +184,77 @@ button.toggle {
   border-radius: 50%;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%,50%);
+  transform: translate(-50%, 50%);
 }
 
-.wrapper{
+.wrapper {
   background-color: white;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: var(--shadow);
   width: 80%;
 }
 
-.grey{
+.grey {
   color: #999999;
 }
 
-.profil-top{
+.profil-top {
   height: 20rem;
   width: 100%;
-  background-image: url('../assets/house-1867187_1280.jpg');
+  background-image: url("../assets/house-1867187_1280.jpg");
   background-position: center;
   background-size: cover;
   position: relative;
 }
 
-.profil-bottom{
+.profil-bottom {
   margin-top: 5rem;
   padding-bottom: 0.8rem;
 }
 
-.profil-stats{
+.profil-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
 
-.stats-item:not(:last-child){
+.stats-item:not(:last-child) {
   border-right: 1px solid black;
 }
 
-.stat{
+.stat {
   font-weight: 700;
 }
 
-.profil-info{
+.profil-info {
   margin-bottom: 1rem;
 }
 
-.edit{
+.edit {
   position: absolute;
-  bottom: 0;left: 100%;
+  bottom: 0;
+  left: 100%;
   background-color: var(--white);
   padding: 0.2rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
+}
+
+.alert {
+  color: var(--white);
+}
+
+.alert.success {
+  background: var(--green);
+}
+
+.alert.error {
+  background: var(--red);
+}
+
+.alert.warning {
+  background: var(--orange);
+}
+
+.alert.info {
+  background: var(--blue);
 }

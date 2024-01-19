@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import Popups from "./Popups";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -12,12 +13,21 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
+  const [popup, SetPopupMessage] = useState({
+    type: "success",
+    content: "hi",
+    visible: false,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
-      alert("Check your password and try again");
+      SetPopupMessage({
+        type: "warning",
+        content: "Check your password and try again",
+        visible: true,
+      });
       return;
     }
 
@@ -26,19 +36,41 @@ const SignUp = () => {
       .post("http://localhost:8081/users", { username, email, password })
       .then((res) => {
         const data = res.data;
-        alert("Resistered succesfully. Go to login page now...");
-        if (data.Succes) navigate("/chatApp/chat");
-        else if (data.Error) {
-          alert("Error : ", data.Error);
+        if (data.Succes) {
+          SetPopupMessage({
+            type: "success",
+            content: "Registered succesfully... go to login page now...",
+            visible: true,
+          });
+          setTimeout(() => {
+            navigate("/chatApp/chat");
+          }, 2000);
+        } else if (data.Error) {
+          SetPopupMessage({
+            type: "error",
+            content: "Error : " + data.Error,
+            visible: true,
+          });
         } else {
-          alert("Warning : " + data.Warning);
+          SetPopupMessage({
+            type: "warning",
+            content: "Warning : " + data.Warning,
+            visible: true,
+          });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        SetPopupMessage({
+          type: "error",
+          content: "Error: " + err,
+          visible: true,
+        });
+      });
   };
 
   return (
     <div className="container">
+      {popup.visible && <Popups type={popup.type} content={popup.content} />}
       <form method="post" onSubmit={handleSubmit} className="login">
         <h1>Register</h1>
         <TextField

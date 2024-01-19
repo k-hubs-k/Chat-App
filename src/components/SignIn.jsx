@@ -5,13 +5,18 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import Popups from "./Popups";
 
 axios.defaults.withCredentials = true;
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassord] = useState("");
   const navigate = useNavigate();
-
+  const [popup, SetPopupMessage] = useState({
+    type: "success",
+    content: "hi",
+    visible: false,
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -21,13 +26,25 @@ const SignIn = () => {
       .then((res) => {
         const response = res.data;
         if (response.Succes) navigate("/chatApp/chat");
-        if (response.Error) alert(response.Error);
+        if (response.Error)
+          SetPopupMessage({
+            type: "error",
+            content: response.Error,
+            visible: true,
+          });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        SetPopupMessage({
+          type: "error",
+          content: err.code,
+          visible: true,
+        }),
+      );
   };
 
   return (
     <div className="container">
+      {popup.visible && <Popups type={popup.type} content={popup.content} />}
       <form onSubmit={handleSubmit} className="login">
         <h1>Welcome back</h1>
         <TextField
