@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import readline from "readline";
 
 dotenv.config();
 
@@ -31,11 +32,36 @@ app.use(
   }),
 );
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "hubs",
-  password: "hubs",
-  database: "chatapp",
+// Get a data typed on backend user keyborard
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+// Variables for connection to mysql database
+let username = "";
+let password = "";
+let db;
+
+// A login system to the mysql database
+rl.question("Enter your mysql server username : ", function (_name) {
+  rl.question("Enter your password : ", function (_pwd) {
+    (username = _name), (password = _pwd);
+    rl.close();
+
+    // Connection to mysql database
+    db = mysql.createConnection({
+      host: "localhost",
+      user: username,
+      password: password,
+      database: "chatapp",
+    });
+
+    // Open the port for frontend
+    app.listen(PORT, () => {
+      console.log(`Server started at port ${PORT} 🚀️`);
+    });
+  });
 });
 
 app.get("/all", (req, res) => {
@@ -125,7 +151,3 @@ app.get("/profil/:id", (req, res) => {
 //         return res.json(resultat)
 //     })
 // })
-
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT} 🚀️`);
-});
