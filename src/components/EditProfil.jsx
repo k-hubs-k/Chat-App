@@ -6,27 +6,27 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function EditProfil() {
     const {id} = useParams()
-    const [values, setValues] = useState({
-        name:'',
-        email:'',
-        pass:''
-    })
+    const [name, setname] = useState('')
+    const [email, setemail] = useState('')
+    const [pass, setpass] = useState('')
     const navigate = useNavigate()
     useEffect(()=>{
         axios.get('http://localhost:8081/profil/'+id)
         .then(res => {
             console.log(res.data)
-            setValues({...values, name: res.data[0].username, email: res.data[0].email, pass: res.data[0].password})
+            setname(res.data[0].username)
+            setemail(res.data[0].email)
+            setpass(res.data[0].password)
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err)) 
     }, [])
 
     const hundlUpdate = (e)=> {
         e.preventDefault()
-        axios.put('http://localhost:8081/edit/'+id, values)
+        axios.put('http://localhost:8081/edit', {name, email, pass})
         .then(res => {
             console.log(res)
-            navigate('/profil')
+            navigate('/chatApp/profile')
         })
         .catch(err => console.log(err))
     }
@@ -39,8 +39,8 @@ function EditProfil() {
                     className="field"
                     id="name"
                     required
-                    onChange={e => setValues({...values, name: e.target.value})}
-                    value={values.name}
+                    onChange={e => setname(e.target.value)}
+                    value={name}
                     label="Username"
                     variant="outlined"
                 />
@@ -49,8 +49,8 @@ function EditProfil() {
                     className="field"
                     id="email"
                     required
-                    onChange={e => setValues({...values, email: e.target.value})}
-                    value={values.email}
+                    onChange={e => setemail(e.target.value)}
+                    value={email}
                     type="email"
                     label="Email"
                     variant="outlined"
@@ -59,8 +59,8 @@ function EditProfil() {
                 <TextField
                     className="field"
                     required
-                    onChange={e => setValues({...values, pass: e.target.value})}
-                    value={values.pass}
+                    onChange={e => setpass(e.target.value)}
+                    value={pass}
                     type="password"
                     label="Password"
                     variant="outlined"
