@@ -2,6 +2,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home";
 import NavBar from "./components/NavBar";
+import FileUpdate from "./FileUpload";
 
 import {
   Outlet,
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
       {
         path: "editprofil",
         element: <EditProfil />,
+      },
+      {
+        path: "upload",
+        element: <FileUpdate />,
       },
       {
         path: "logout",

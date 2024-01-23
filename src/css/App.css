@@ -168,7 +168,7 @@ button.toggle {
 }
 
 .profilImg{
-  background-image: url('../assets/fdl.jpg');
+  /* background-image: url('../assets/fdl.jpg'); */
   background-position: center;
   background-size: cover;
   position: absolute;
@@ -197,7 +197,7 @@ button.toggle {
 .profil-top{
   height: 20rem;
   width: 100%;
-  background-image: url('../assets/house-1867187_1280.jpg');
+  /* background-image: url('../assets/house-1867187_1280.jpg'); */
   background-position: center;
   background-size: cover;
   position: relative;

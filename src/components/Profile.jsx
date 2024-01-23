@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import image from "../assets/fdl.jpg"
 
 const Profile = () => {
   // return <div className="profile">See your profile here...</div>;
@@ -19,10 +18,10 @@ const Profile = () => {
   return (
       <>
         <div className="wrapper">
-            <div className="profil-top">
-              <div className="profilImg">
+            <div className="profil-top" style={{backgroundImage: 'url("http://localhost:8081/images/'+user.images+'")'}}>
+              <NavLink to={'../upload'} className="profilImg" style={{backgroundImage: 'url("http://localhost:8081/images/'+user.images+'")'}}>
                   <NavLink to={'../editprofil'} className="edit">Edit</NavLink>
-                </div>
+                </NavLink>
             </div>
             <div className="profil-bottom">
               <div className="profil-info">
@@ -51,7 +50,6 @@ const Profile = () => {
         </div>
         <div style={{display:"none"}}>
             <h2>user Detail</h2>
-            <img src={image} alt="" className="profilImg" />
             <h2>{user.username}</h2>
             <h2>{user.email}</h2>
             <NavLink to={'../editprofil'} className="btn btn-info">Edit</NavLink>
