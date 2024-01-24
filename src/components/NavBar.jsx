@@ -6,6 +6,8 @@ import {
   QuestionAnswer,
   SearchRounded,
 } from "@mui/icons-material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
@@ -17,6 +19,21 @@ const NavBar = () => {
     { to: "profile", component: <AccountCircleOutlined /> },
     { to: "Logout", component: <LogoutOutlined /> },
   ];
+
+  const [imgPath, setImgPath] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081/")
+      .then((res) => {
+        const data = res.data;
+        setImgPath("../../back/public/images/" + data.img);
+        console.log(imgPath);
+      })
+      .catch((err) => {
+        console.log("error : ", err);
+      });
+  }, []);
   return (
     <div className="navigation">
       <div className="mobile">
@@ -36,7 +53,7 @@ const NavBar = () => {
         <li className="profile">
           <NavLink to="profile" aria-disabled>
             <span className="icon">
-              <AccountCircleOutlined />
+              <img src={imgPath} />
             </span>
           </NavLink>
         </li>
