@@ -1,11 +1,16 @@
-import "../css/App.css";
-import "../css/index.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
-import Popups from "./Popups";
+
+// Popup
+import { toast, ToastContainer } from "react-toastify";
+
+// CSS
+import "react-toastify/dist/ReactToastify.css";
+import "../css/App.css";
+import "../css/index.css";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -13,21 +18,20 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
-  const [popup, SetPopupMessage] = useState({
-    type: "success",
-    content: "hi",
-    visible: false,
-  });
+
+  const popupOptions = {
+    position: "top-center",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
-      SetPopupMessage({
-        type: "warning",
-        content: "Check your password and try again",
-        visible: true,
-      });
+      toast.error("Password and confirm must be same.", popupOptions);
       return;
     }
 
@@ -37,40 +41,26 @@ const SignUp = () => {
       .then((res) => {
         const data = res.data;
         if (data.Succes) {
-          SetPopupMessage({
-            type: "success",
-            content: "Registered succesfully... go to login page now...",
-            visible: true,
-          });
+          toast.success(
+            "Registered succesfully... go to login now...",
+            popupOptions,
+          );
           setTimeout(() => {
             navigate("/chatApp/chat");
           }, 2000);
         } else if (data.Error) {
-          SetPopupMessage({
-            type: "error",
-            content: "Error : " + data.Error,
-            visible: true,
-          });
+          toast.error("Error : " + data.Error, popupOptions);
         } else {
-          SetPopupMessage({
-            type: "warning",
-            content: "Warning : " + data.Warning,
-            visible: true,
-          });
+          toast.warning("Error : " + data.Warning, popupOptions);
         }
       })
       .catch((err) => {
-        SetPopupMessage({
-          type: "error",
-          content: "Error: " + err,
-          visible: true,
-        });
+        toast.error("Error : " + err, popupOptions);
       });
   };
 
   return (
     <div className="container">
-      {popup.visible && <Popups type={popup.type} content={popup.content} />}
       <form method="post" onSubmit={handleSubmit} className="login">
         <h1>Register</h1>
         <TextField
@@ -115,6 +105,7 @@ const SignUp = () => {
           Register
         </Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

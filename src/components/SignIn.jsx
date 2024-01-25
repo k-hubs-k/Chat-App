@@ -5,18 +5,24 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
-import Popups from "./Popups";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 axios.defaults.withCredentials = true;
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassord] = useState("");
   const navigate = useNavigate();
-  const [popup, SetPopupMessage] = useState({
-    type: "success",
-    content: "hi",
-    visible: false,
-  });
+
+  const popupOptions = {
+    position: "top-center",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -26,25 +32,15 @@ const SignIn = () => {
       .then((res) => {
         const response = res.data;
         if (response.Succes) navigate("/chatApp/chat");
-        if (response.Error)
-          SetPopupMessage({
-            type: "error",
-            content: response.Error,
-            visible: true,
-          });
+        if (response.Error) toast.error(response.Error, popupOptions);
       })
-      .catch((err) =>
-        SetPopupMessage({
-          type: "error",
-          content: err.code,
-          visible: true,
-        }),
-      );
+      .catch((err) => {
+        toast.error(err.code, popupOptions);
+      });
   };
 
   return (
     <div className="container">
-      {popup.visible && <Popups type={popup.type} content={popup.content} />}
       <form onSubmit={handleSubmit} className="login">
         <h1>Welcome back</h1>
         <TextField
@@ -72,6 +68,7 @@ const SignIn = () => {
           Sign In
         </Button>
       </form>
+      <ToastContainer />
     </div>
   );
 };
