@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import Button from "@mui/material/Button";
 
 function FileUpdate() {
     const [file, setFile] = useState()
@@ -34,13 +35,17 @@ function FileUpdate() {
     return (
         <>
             <div className='container'>
+                <h1 style={{marginBottom: '1rem'}}>Edit your profile picture</h1>
                 <input 
                     filename={file}
                     type="file"
                     onChange={e => setFile(e.target.files[0])}
                     accept="image/*"
+                    required
                 />
-                <button onClick={hundlUpload}>upload</button>
+                <Button variant="outlined" type="submit" onClick={hundlUpload} style={{marginTop: '1rem'}} >
+                    upload
+                </Button>
             </div>
             <br />
         </>

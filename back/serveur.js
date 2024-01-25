@@ -185,7 +185,7 @@ app.post('/upload', upload.single("image"), (req, res) => {
 })
 
 app.put('/edit', (req, res) => {
-  const sql = 'UPDATE users SET `username` = ?, `email`, `password` = ? WHERE id = ?'
+  const sql = 'UPDATE users SET `username` = ?, `email` = ?, `password` = ? WHERE id = ?'
   const ID = req.session.username;
   const values = [
       req.body.name,
@@ -194,7 +194,7 @@ app.put('/edit', (req, res) => {
   ]
   db.query(sql, [...values, ID], (err, resultat) => {
       if (err) return res.json({Message: "Erreur inside server"}) 
-      return res.json(resultat)
+      return res.json(resultat) 
   })
 })
 
