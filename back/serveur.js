@@ -124,7 +124,6 @@ app.post("/login", (req, res) => {
       req.session.userId = data[0].id;
       req.session.img = data[0].images;
       req.session.email = data[0].email;
-      console.log(data);
       return res.json({
         Succes: "Connected...",
       });
