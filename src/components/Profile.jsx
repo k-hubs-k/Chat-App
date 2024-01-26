@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 const Profile = () => {
   // return <div className="profile">See your profile here...</div>;
@@ -10,30 +9,29 @@ const Profile = () => {
   useEffect(()=>{
       axios.get('http://localhost:8081/profil/'+id)
       .then(res => {
-          console.log(res.data);
           setuser(res.data[0])
       })
       .catch(err => console.log(err))
   }, [])
 
   const backG = () => {
-      if (user.images != null) {
-        return {backgroundImage: 'url("http://localhost:8081/images/'+user.images+'")'}
-      } else {
-        return {
-          backgroundColor: '#FFFFFF',
-          backgroundImage: 'linear-gradient(180deg, #FFFFFF 0%, #f0f0f0 50%, #e2e2e2 100%)'
-        }
+    if (user.images != null) {
+      return {backgroundImage: 'url("http://localhost:8081/images/'+user.images+'")'}
+    } else {
+      return {
+        backgroundColor: '#FFFFFF',
+        backgroundImage: 'linear-gradient(180deg, #FFFFFF 0%, #f0f0f0 50%, #e2e2e2 100%)'
       }
+    }
   }
 
   return (
       <>
         <div className="wrapper">
             <div className="profil-top" style={backG()}>
-              {<NavLink to={'../upload'} className="profilImg" style={backG()}>
+              <NavLink to={'../upload'} className="profilImg" style={backG()}>
                   <NavLink to={'../editprofil'} className="edit">Edit</NavLink>
-              </NavLink>}
+                </NavLink>
             </div>
             <div className="profil-bottom">
               <div className="profil-info">
@@ -42,7 +40,7 @@ const Profile = () => {
                   <p className="age grey">26</p>
                 </div>
                 <p className="email">{user.email}</p>
-                <p className="ville"><LocationOnOutlinedIcon /> Madagascar</p>
+                <p className="ville">Madagascar</p>
               </div>
               <div className="profil-stats">
                 <div className="stats-item">
