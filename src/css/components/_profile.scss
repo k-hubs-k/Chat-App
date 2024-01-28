@@ -1,0 +1,65 @@
+.profilImg {
+  /* background-image: url('../assets/fdl.jpg'); */
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  /* overflow: hidden; */
+  border: 3px solid white;
+  border-radius: 50%;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.wrapper {
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: $shadow;
+  width: 80%;
+}
+
+.grey {
+  color: $black2;
+}
+
+.profil-top {
+  height: 20rem;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.profil-bottom {
+  margin-top: 5rem;
+  padding-bottom: 0.8rem;
+}
+
+.profil-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.stats-item:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+.stat {
+  font-weight: 700;
+}
+
+.profil-info {
+  margin-bottom: 1rem;
+}
+
+.edit {
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  background-color: $white;
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+}

@@ -4,24 +4,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
-import { NavLink, useNavigate } from "react-router-dom";
 
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import popupOptions from "../utils/toastOptions";
 
 axios.defaults.withCredentials = true;
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassord] = useState("");
   const navigate = useNavigate();
-
-  const popupOptions = {
-    position: "top-center",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +24,7 @@ const SignIn = () => {
       .post("http://localhost:8081/login", { username, password })
       .then((res) => {
         const response = res.data;
-        if (response.Succes) navigate("/chatApp/chat");
+        if (response.Succes) navigate("/chatApp");
         if (response.Error) toast.error(response.Error, popupOptions);
       })
       .catch((err) => {

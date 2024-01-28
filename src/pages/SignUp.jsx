@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 // Popup
 import { toast, ToastContainer } from "react-toastify";
+import popupOptions from "../utils/toastOptions";
 
 // CSS
 import "react-toastify/dist/ReactToastify.css";
@@ -18,14 +19,6 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
-
-  const popupOptions = {
-    position: "top-center",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +39,7 @@ const SignUp = () => {
             popupOptions,
           );
           setTimeout(() => {
-            navigate("/chatApp/chat");
+            navigate("/");
           }, 2000);
         } else if (data.Error) {
           toast.error("Error : " + data.Error, popupOptions);

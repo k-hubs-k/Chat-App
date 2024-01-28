@@ -23,6 +23,7 @@ const NavBar = () => {
   ];
 
   const [imgPath, setImgPath] = useState("");
+  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     axios
