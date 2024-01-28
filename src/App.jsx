@@ -1,6 +1,6 @@
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import Home from "./components/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import FileUpdate from "./FileUpload";
 
@@ -10,13 +10,13 @@ import {
   createBrowserRouter,
   useNavigate,
 } from "react-router-dom";
-import Chat from "./components/Chat";
-import Settings from "./components/Settings";
-import Search from "./components/Search";
-import Profile from "./components/Profile";
+import Chat from "./pages/Chat";
+import Settings from "./pages/Settings";
+import Search from "./pages/Search";
+import Profile from "./pages/Profile";
 import EditProfil from "./components/EditProfil";
 import LogOut from "./components/LogOut";
-import MainMenu from "./components/MainMenu";
+import MainMenu from "./pages/MainMenu";
 
 import axios from "axios";
 import { useEffect } from "react";

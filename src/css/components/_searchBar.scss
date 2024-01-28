@@ -1,0 +1,18 @@
+.searchBar {
+  display: flex;
+  gap: 1rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    min-width: 250px;
+  }
+
+  .searchBtn {
+    height: 2rem;
+    top: 0.8rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+}
