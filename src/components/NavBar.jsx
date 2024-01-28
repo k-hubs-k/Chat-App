@@ -6,6 +6,8 @@ import {
   QuestionAnswer,
   SearchRounded,
 } from "@mui/icons-material";
+import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -28,12 +30,11 @@ const NavBar = () => {
       .then((res) => {
         const data = res.data;
         setImgPath("../../back/public/images/" + data.img);
-        console.log(imgPath);
       })
       .catch((err) => {
         console.log("error : ", err);
       });
-  }, []);
+  });
   return (
     <div className="navigation">
       <div className="mobile">
@@ -42,19 +43,26 @@ const NavBar = () => {
       </div>
       <ul>
         {links.map((item, key) => {
+          const badg = (e, n) => {
+            if (key == 1) {
+              return (
+                  <span className="icon"><Badge badgeContent={n} color="secondary">{e}</Badge></span>
+              )
+            } else {
+              return <span className="icon">{e}</span>
+            }
+          }
           return (
             <li key={key}>
               <NavLink to={item.to}>
-                <span className="icon">{item.component}</span>
+                {badg(item.component,6)}
               </NavLink>
             </li>
           );
         })}
         <li className="profile">
           <NavLink to="profile" aria-disabled>
-            <span className="icon">
-              <img src={imgPath} />
-            </span>
+              <Avatar alt="Memy Sharp" src={imgPath} sx={{ width: 54, height: 54 }} />
           </NavLink>
         </li>
       </ul>

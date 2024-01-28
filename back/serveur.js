@@ -186,6 +186,7 @@ app.post("/upload", upload.single("image"), (req, res) => {
   const sql = "UPDATE users SET `images` = ? WHERE id = ?";
   db.query(sql, [image, ID], (err, resultat) => {
     if (err) return res.json({ Message: "Error" });
+    req.session.img = image;
     return res.json({ Status: "Succes" });
   });
 });

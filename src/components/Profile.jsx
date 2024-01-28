@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 
 const Profile = () => {
   // return <div className="profile">See your profile here...</div>;
@@ -40,7 +41,7 @@ const Profile = () => {
                   <p className="age grey">26</p>
                 </div>
                 <p className="email">{user.email}</p>
-                <p className="ville">Madagascar</p>
+                <p className="ville"><FmdGoodOutlinedIcon /> Madagascar</p>
               </div>
               <div className="profil-stats">
                 <div className="stats-item">

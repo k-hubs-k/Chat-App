@@ -4,8 +4,12 @@ import ico from "../assets/41gYkruZM2L.png";
 
 const Search = () => {
   const [search, setSearch] = useState("");
+  const hundleSearch = (e) => {
+      e.preventDefault();
+      console.log("rechercher");
+  }
   return <>
-    <div class="cont">
+    <form class="cont" onSubmit={hundleSearch}>
       <TextField
           className="searchbar"
           required
@@ -15,7 +19,7 @@ const Search = () => {
           variant="outlined"
       />
       <img src={ico} alt="search icon" className="button" />
-    </div>
+    </form>
   </>
 };
 

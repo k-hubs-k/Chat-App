@@ -7,9 +7,10 @@
   --red: #dd614a;
   --green: #06a77d;
   --black2: #999;
-  --shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
-    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  --shadow: #ffffff1a 0px 1px 1px 0px inset,
+    #32325d40 0px 50px 100px -20px,
+    #0000004d 0px 30px 60px -30px;
+  --shadowSMS: #64646f33 0px 7px 29px 0px;
 }
 
 * {
@@ -370,9 +371,9 @@ form.login button {
   padding: 10px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  overflow: scroll;
-  box-shadow: var(--shadow);
-  width: 250px;
+  overflow-y: scroll;
+  box-shadow: var(--shadowSMS);
+  width: 20rem;
   height: 98%;
 }
 
@@ -407,6 +408,11 @@ form.login button {
   display: flex;
   flex-direction: column;
   text-align: left;
+  color: var(--black1);
+}
+
+.chat .availableChat .message .content .content {
+  color: var(--black1);
 }
 
 .chat .availableChat .message .profile {
@@ -483,7 +489,7 @@ form.login button {
 .chat .read .chatArea {
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-y: scroll;
   gap: 10px;
   padding: 10px;
   height: calc(100% - 170px);
@@ -492,8 +498,6 @@ form.login button {
 .chat .read .chatArea .msg {
   padding: 10px;
   color: var(--white);
-  box-shadow: var(--shadow);
-  background: var(--blue);
   max-width: 75%;
   border-radius: 10px;
 }
@@ -501,11 +505,16 @@ form.login button {
 .chat .read .chatArea div.msg.me {
   border-top-right-radius: 0;
   margin-left: auto;
+  box-shadow: var(--shadowSMS);
+  background: var(--blue);
 }
 
 .chat .read .chatArea div.msg.you {
-  background: rgba(50, 50, 93, 0.1);
+  color: var(--black1);
   border-top-left-radius: 0;
+  margin-right: auto;
+  box-shadow: var(--shadowSMS);
+  background: var(--white);
 }
 
 .chat .read .type {
@@ -524,19 +533,33 @@ form.login button {
   box-shadow: var(--shadow);
 }
 
+.chat .read .type span {
+  padding: 10px;
+  width: 90%;
+  position: relative;
+}
+
+.chat .read .type span .tag {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  cursor: pointer;
+}
+
 .chat .read .type input {
   border: none;
   outline: none;
   padding: 10px;
-  width: 90%;
+  width: 100%;
   border-radius: 6px;
 }
 
-.chat .read .type a {
+.chat .read .type {
   color: var(--white);
 }
 
-.chat .read .type a svg {
+.chat .read .type svg {
   font-size: 2rem;
   color: var(--blue);
 }
