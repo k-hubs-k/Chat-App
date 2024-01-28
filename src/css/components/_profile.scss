@@ -17,12 +17,13 @@
   background-color: white;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: $shadow;
+
+  box-shadow: var(--shadow);
   width: 80%;
 }
 
 .grey {
-  color: $black2;
+  color: #999999;
 }
 
 .profil-top {
@@ -59,7 +60,8 @@
   position: absolute;
   bottom: 0;
   left: 100%;
-  background-color: $white;
+
+  background-color: var(--white);
   padding: 0.2rem;
   border-radius: 0.2rem;
 }

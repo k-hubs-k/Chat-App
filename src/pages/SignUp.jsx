@@ -10,8 +10,6 @@ import popupOptions from "../utils/toastOptions";
 
 // CSS
 import "react-toastify/dist/ReactToastify.css";
-import "../css/App.css";
-import "../css/index.css";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
