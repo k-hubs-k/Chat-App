@@ -62,9 +62,7 @@ const NavBar = () => {
           );
         })}
         <li className="profile">
-          <NavLink to="profile" aria-disabled>
-              <Avatar alt="Memy Sharp" src={imgPath} sx={{ width: 54, height: 54 }} />
-          </NavLink>
+            <Avatar alt="Memy Sharp" src={imgPath} sx={{ width: 54, height: 54 }} />
         </li>
       </ul>
     </div>

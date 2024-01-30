@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
+import Avatar from "@mui/material/Avatar";
 
 const Profile = () => {
   // return <div className="profile">See your profile here...</div>;
@@ -29,10 +30,12 @@ const Profile = () => {
   return (
       <>
         <div className="wrapper">
-            <div className="profil-top" style={backG()}>
-              <NavLink to={'../upload'} className="profilImg" style={backG()}>
-                  <NavLink to={'../editprofil'} className="edit">Edit</NavLink>
-                </NavLink>
+            <div className="profil-top">
+            <Avatar alt={user.username} src={'http://localhost:8081/images/'+user.images}  sx={{ width: '100%', height: '100%' ,marginBottom: '1rem'}} variant="square" />
+              <NavLink to={'../upload'} className="profilImg">
+                <Avatar alt={user.username} src={'http://localhost:8081/images/'+user.images}  sx={{ width: '100%', height: '100%' ,marginBottom: '1rem'}} />
+                <NavLink to={'../editprofil'} className="edit">Edit</NavLink>
+              </NavLink>
             </div>
             <div className="profil-bottom">
               <div className="profil-info">
