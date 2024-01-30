@@ -95,6 +95,17 @@ app.get("/all", (req, res) => {
   });
 });
 
+async function fetchUserData(id) {
+  const sql = "SELECT * FROM users WHERE id = ?";
+  try {
+    const results = await queryDatabase(sql, [id]);
+    return results[0]; // Retourne la première ligne de résultats
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 app.get("/", (req, res) => {
   if (req.session.username) {
     return res.json({
@@ -181,8 +192,8 @@ app.post("/upload", upload.single("image"), (req, res) => {
       }
     });
   } else {
-    console.log("This file doesn't exists");
   }
+  console.log("This file doesn't exists");
   const sql = "UPDATE users SET `images` = ? WHERE id = ?";
   db.query(sql, [image, ID], (err, resultat) => {
     if (err) return res.json({ Message: "Error" });
@@ -208,5 +219,70 @@ app.delete("/delete/:id", (req, res) => {
   db.query(sql, [ID], (err, result) => {
     if (err) return res.json({ Message: "Error inside server" });
     return res.json(result);
+  });
+});
+
+function queryDatabase(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.query(sql, params, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.get("/conversation/", (req, res) => {
+  const sql =
+    "SELECT * FROM conversations WHERE from_id = ? OR to_id = ? ORDER BY id DESC";
+  const id = req.session.userId;
+  db.query(sql, [id, id], (err, result) => {
+    if (err) {
+      return res.json({ Message: "Error inside server" });
+    }
+    let user_id = [];
+    let lastChat = [];
+    result.map((item) => {
+      let toCheck = item.from_id == id ? item.to_id : item.from_id;
+      if (user_id.indexOf(toCheck) == -1) {
+        user_id.push(toCheck);
+        lastChat.push(item.content);
+      }
+    });
+    (async () => {
+      let out = [];
+      for (let i = 0; i < user_id.length; i++) {
+        const userData = await fetchUserData(user_id[i]);
+        out.push({
+          user_id: userData.id,
+          username: userData.username,
+          email: userData.email,
+          images: userData.images,
+          conversation: lastChat[i],
+        });
+      }
+      return res.json(out);
+    })();
+  });
+});
+
+app.get("/conversation/:id", (req, res) => {
+  const target_id = req.params.id;
+  const id = req.session.userId;
+  console.log("here : ", id, target_id);
+  const sql =
+    "SELECT * FROM conversations WHERE from_id = ? AND to_id = ? OR from_id = ? AND to_id = ?";
+  db.query(sql, [id, target_id, target_id, id], (err, result) => {
+    if (err) {
+      return res.json({ Message: "Error inside server" });
+    }
+    console.log("test : ", result);
+    (async () => {
+      const target_info = await fetchUserData(target_id);
+      const out = { you: id, conversations: result, target_info: target_info };
+      return res.json(out);
+    })();
   });
 });
