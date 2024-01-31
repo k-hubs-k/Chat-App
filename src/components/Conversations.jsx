@@ -34,6 +34,20 @@ const Conversations = ({ target_id }) => {
     }
   }, [target_id]);
 
+  const hundleSubmit = (e) => {
+      e.preventDefault();
+      const date1 = new Date()
+      axios
+        .post("http://localhost:8081/send", {target_id, message, date1})
+        .then((res) => {
+          console.log(res);
+          setmessage('');
+        })
+        .catch(() => {
+          console.log("Unable to load this conversation");
+        });
+  }
+
   return (
     <div className="read">
       {target_id ? (
@@ -63,17 +77,19 @@ const Conversations = ({ target_id }) => {
               );
             })}
           </div>
-          <div className="type">
-            <input
-              type="text"
-              placeholder="Message"
-              value={message}
-              onChange={(e) => {
-                setmessage(e.target.value);
-              }}
-            />
-            <SendEmoji setmessage={setmessage} />
-            <SendOutlined />
+          <div>
+            <form className="type" onSubmit={hundleSubmit}>
+              <input
+                type="text"
+                placeholder="Message"
+                value={message}
+                onChange={(e) => {
+                  setmessage(e.target.value);
+                }}
+              />
+              <SendEmoji setmessage={setmessage} />
+              <SendOutlined onClick={hundleSubmit} sx={{ cursor: "pointer"}} />
+            </form>
           </div>
         </>
       ) : (
