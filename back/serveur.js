@@ -76,6 +76,7 @@ rl.question("Enter your mysql server username : ", function (_name) {
       user: username,
       password: password,
       database: "chatapp",
+      charset : 'utf8mb4',
     });
 
     // Open the port for frontend
@@ -234,11 +235,11 @@ function queryDatabase(sql, params) {
   });
 }
 
-app.get("/conversation/", (req, res) => {
+app.get("/conversation", (req, res) => {
   const sql =
-    "SELECT * FROM conversations WHERE from_id = ? OR to_id = ? ORDER BY id DESC";
+    "SELECT * FROM conversations WHERE to_id = ? ORDER BY id DESC";
   const id = req.session.userId;
-  db.query(sql, [id, id], (err, result) => {
+  db.query(sql, [id], (err, result) => {
     if (err) {
       return res.json({ Message: "Error inside server" });
     }
@@ -285,4 +286,17 @@ app.get("/conversation/:id", (req, res) => {
       return res.json(out);
     })();
   });
+});
+
+app.post("/send", (req, res) => {
+    const fromId = req.session.userId;
+    const toId = req.body.target_id;
+    const content = req.body.message;
+    const time = req.body.date1;
+    const sql = "INSERT INTO conversations (`from_id`,`to_id`,`content`,`time`) VALUES (?)";
+    const values = [fromId, toId, content, time];
+    db.query(sql, [values], (err, result) => {
+      if (err) return res.json({ Error: err });
+      return res.json({ Succes: result });
+    });
 });
