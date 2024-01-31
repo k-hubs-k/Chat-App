@@ -96,7 +96,11 @@ const Search = () => {
           })
           .map((resultat, index) => {
             return (
-              <NavLink to={""} className="message" key={index}>
+              <NavLink
+                to={"/chatApp/profile/" + resultat.id}
+                className="message"
+                key={index}
+              >
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
                     <Avatar

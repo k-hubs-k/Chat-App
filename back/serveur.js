@@ -172,14 +172,18 @@ app.post("/users", (req, res) => {
   });
 });
 
+app.get("/profil/", (req, res) => {
+  (async () => {
+    const data = await fetchUserData(req.session.userId);
+    return res.json(data);
+  })();
+});
+
 app.get("/profil/:id", (req, res) => {
-  const sql = "SELECT * FROM users WHERE id = ?";
-  const id = req.session.userId;
-  db.query(sql, [id], (erreur, resultat) => {
-    if (erreur) return res.json({ Message: "Erreur inside server" });
-    img = req.session.img;
-    return res.json(resultat);
-  });
+  (async () => {
+    const data = await fetchUserData(req.params.id);
+    return res.json(data);
+  })();
 });
 
 app.post("/upload", upload.single("image"), (req, res) => {

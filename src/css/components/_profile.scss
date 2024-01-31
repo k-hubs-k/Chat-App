@@ -1,67 +1,75 @@
-.profilImg {
-  /* background-image: url('../assets/fdl.jpg'); */
-  background-position: center;
-  background-size: cover;
-  position: absolute;
-  width: 10rem;
-  height: 10rem;
-  /* overflow: hidden; */
-  border: 3px solid white;
-  border-radius: 50%;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 50%);
-}
-
 .wrapper {
   background-color: white;
   border-radius: 0.5rem;
   overflow: hidden;
   margin: auto;
-  box-shadow: var(--shadow);
+  box-shadow: $shadow;
   width: 80%;
-}
 
-.grey {
-  color: #999999;
-}
+  .profil-top {
+    height: 20rem;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+  }
 
-.profil-top {
-  height: 20rem;
-  width: 100%;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-}
+  .profilImg {
+    /* background-image: url('../assets/fdl.jpg'); */
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    width: 10rem;
+    height: 10rem;
+    /* overflow: hidden; */
+    border: 3px solid white;
+    border-radius: 50%;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
 
-.profil-bottom {
-  margin-top: 5rem;
-  padding-bottom: 0.8rem;
-}
+  .profil-bottom {
+    margin-top: 5rem;
+    padding-bottom: 0.8rem;
 
-.profil-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
+    .profil-info {
+      margin-bottom: 1rem;
+      color: $black1;
 
-.stats-item:not(:last-child) {
-  border-right: 1px solid black;
-}
+    }
 
-.stat {
-  font-weight: 700;
-}
+    .grey {
+      color: #999999;
+    }
 
-.profil-info {
-  margin-bottom: 1rem;
-}
+    .profil-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
 
-.edit {
-  position: absolute;
-  bottom: 0;
-  left: 100%;
+    .ville {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 
-  background-color: var(--white);
-  padding: 0.2rem;
-  border-radius: 0.2rem;
+  .stats-item:not(:last-child) {
+    border-right: 1px solid black;
+
+  }
+
+  .stat {
+    font-weight: 700;
+    color: $black1;
+  }
+
+
+  .edit {
+    background-color: $white;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    min-width: 200px;
+  }
 }

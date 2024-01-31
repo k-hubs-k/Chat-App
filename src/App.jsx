@@ -103,6 +103,12 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+        children: [
+          {
+            path: ":id",
+            element: <Profile />,
+          },
+        ],
       },
       {
         path: "editprofil",
