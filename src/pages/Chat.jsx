@@ -5,6 +5,8 @@ import Conversations from "../components/Conversations.jsx";
 
 const Chat = () => {
   const [idConversation, setIdConversation] = useState(0);
+  const [messages, setMessages] = useState([]);
+
   const openConversation = (_id) => {
     setIdConversation(_id);
   };
@@ -19,7 +21,12 @@ const Chat = () => {
           <Messages onOpenChat={openConversation} />
         </List>
       </div>
-      <Conversations target_id={idConversation} />
+      {
+        <Conversations
+          target_id={idConversation}
+          handleChange={openConversation}
+        />
+      }
     </div>
   );
 };

@@ -6,8 +6,8 @@ import {
   QuestionAnswer,
   SearchRounded,
 } from "@mui/icons-material";
-import Avatar from '@mui/material/Avatar';
-import Badge from '@mui/material/Badge';
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -23,14 +23,13 @@ const NavBar = () => {
   ];
 
   const [imgPath, setImgPath] = useState("");
-  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     axios
       .get("http://localhost:8081/")
       .then((res) => {
         const data = res.data;
-        setImgPath("../../back/public/images/" + data.img);
+        setImgPath("../../back/public/images/" + data.images);
       })
       .catch((err) => {
         console.log("error : ", err);
@@ -47,22 +46,28 @@ const NavBar = () => {
           const badg = (e, n) => {
             if (key == 1) {
               return (
-                  <span className="icon"><Badge badgeContent={n} color="secondary">{e}</Badge></span>
-              )
+                <span className="icon">
+                  <Badge badgeContent={n} color="secondary">
+                    {e}
+                  </Badge>
+                </span>
+              );
             } else {
-              return <span className="icon">{e}</span>
+              return <span className="icon">{e}</span>;
             }
-          }
+          };
           return (
             <li key={key}>
-              <NavLink to={item.to}>
-                {badg(item.component,6)}
-              </NavLink>
+              <NavLink to={item.to}>{badg(item.component, 6)}</NavLink>
             </li>
           );
         })}
         <li className="profile">
-            <Avatar alt="Memy Sharp" src={imgPath} sx={{ width: 54, height: 54 }} />
+          <Avatar
+            alt="Memy Sharp"
+            src={imgPath}
+            sx={{ width: 54, height: 54 }}
+          />
         </li>
       </ul>
     </div>

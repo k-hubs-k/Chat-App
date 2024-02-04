@@ -28,9 +28,10 @@ const SignUp = () => {
 
     // First of all, change serverUrl to the correct server url
     axios
-      .post("http://localhost:8081/users", { username, email, password })
+      .post("http://localhost:8081/register", { username, email, password })
       .then((res) => {
         const data = res.data;
+        console.log(data.data);
         if (data.Succes) {
           toast.success(
             "Registered succesfully... go to login now...",

@@ -28,7 +28,7 @@ const Root = () => {
       .get("http://localhost:8081/")
       .then((res) => {
         const data = res.data;
-        if (!data.isLoggedIn) {
+        if (!data.userId) {
           navigate("/authentification/signIn");
         }
       })
@@ -62,7 +62,7 @@ const AuthentificationPage = () => {
       .get("http://localhost:8081/")
       .then((res) => {
         const data = res.data;
-        if (data.isLoggedIn) {
+        if (data.userId) {
           navigate("/chatApp/chat");
         }
       })

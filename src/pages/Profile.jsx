@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import Avatar from "@mui/material/Avatar";
@@ -13,13 +13,14 @@ const Profile = () => {
   } else {
     userIdToFind = "/" + id;
   }
-  const url = "http://localhost:8081/profil" + userIdToFind;
+  const url = "http://localhost:8081/profile" + userIdToFind;
   const [user, setuser] = useState([]);
+
   useLayoutEffect(() => {
     axios
       .get(url)
       .then((res) => {
-        setuser(res.data);
+        setuser(res.data.user);
       })
       .catch((err) => console.log(err));
   }, []);

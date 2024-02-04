@@ -14,13 +14,15 @@ function EditProfil() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:8081/profil/")
+      .get("http://localhost:8081/profile")
       .then((res) => {
         setname(res.data.username);
         setemail(res.data.email);
         setpass(res.data.password);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Errur inside server", popupOptions);
+      });
   }, []);
 
   const hundlUpdate = (e) => {
@@ -28,7 +30,7 @@ function EditProfil() {
     axios
       .put("http://localhost:8081/edit", { name, email, pass })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         toast.success("Updated sussesfully.", popupOptions);
         setTimeout(() => {
           navigate("/chatApp/profile");

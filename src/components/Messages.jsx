@@ -7,34 +7,74 @@ import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
-import { toast } from "react-toastify";
-import popupOptions from "../utils/toastOptions";
 
 const Messages = ({ onOpenChat }) => {
-  const [messages, setMessages] = useState([]);
-  const [fetched, setFetched] = useState(false);
-  useEffect(() => {
-    if (!fetched) {
-      axios
-        .get("http://localhost:8081/conversation")
-        .then((res) => {
-          setMessages(res.data);
-        })
-        .catch((err) => {
-          toast.error(
-            "Error on fetching messages " + err.messages,
-            popupOptions,
-          );
-        });
-      setFetched(true);
-    }
-  }, []);
-
+  const [conversations, setConversations] = useState([]);
+  const [proced, setProced] = useState(false);
   const handleClick = (_id) => {
     onOpenChat(_id);
   };
+  const filterData = (data) => {
+    if (proced) return;
+    const seenIds = [];
+    const chat = data.Conversations;
+    const activeUser = data.active;
+    let out = [];
 
-  return messages.map((msg) => {
+    const uniqueData = chat.filter((item) => {
+      const toCheck = item.from_id == activeUser ? item.to_id : item.from_id;
+      if (seenIds.indexOf(toCheck) == -1) {
+        seenIds.push(toCheck);
+        return true;
+      }
+      return false;
+    });
+    for (let i = 0; i < uniqueData.length; i++) {
+      const toCheck =
+        uniqueData[i].from_id == activeUser
+          ? uniqueData[i].to_id
+          : uniqueData[i].from_id;
+
+      getTargetInfo(toCheck, (err, res) => {
+        if (!err) {
+          out.push({
+            user_id: res.id,
+            username: res.username,
+            email: res.email,
+            conversation: uniqueData[i].content,
+            images: res.images,
+          });
+          if (i == uniqueData.length - 1) {
+            setConversations(out);
+            setProced(true);
+          }
+        } else {
+          console.log("err : ", err);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:8081/conversation").then((res) => {
+      filterData(res.data);
+    });
+  }, []);
+
+  function getTargetInfo(_id, callback) {
+    if (_id) {
+      axios
+        .get("http://localhost:8081/user/" + _id)
+        .then((res) => {
+          callback(null, res.data);
+        })
+        .catch((err) => {
+          callback(err, null);
+        });
+    }
+  }
+
+  return conversations.map((msg) => {
     const imgPath = "../../back/public/images/" + msg.images;
     return (
       <NavLink

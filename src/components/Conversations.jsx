@@ -6,51 +6,62 @@ import SendEmoji from "./SendEmoji";
 
 // react
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 // Database
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import popupOptions from "../utils/toastOptions";
 
-const Conversations = ({ target_id }) => {
-  const [message, setmessage] = useState("");
-  const [allConversations, setConversations] = useState([]);
-  const [activeUser, setActiveUser] = useState(0);
-  const [targetUser, setTargetUser] = useState({});
+const Conversations = ({ target_id, handleChange }) => {
+  const [conversations, setConversations] = useState([]);
+  const { id } = useParams();
+  const [message, setmessage] = useState([]);
+  const [targetUser, setTargetUser] = useState([]);
+  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
-    if (target_id > 0)
+    if (!fetched && id) {
+      handleChange(id);
       axios
-        .get("http://localhost:8081/conversation/" + target_id)
+        .get("http://localhost:8081/profile/" + id)
         .then((res) => {
-          setConversations(res.data.conversations);
-          setActiveUser(res.data.you); // Can help to giving className to messages
-          setTargetUser(res.data.target_info);
+          setTargetUser(res.data.user);
         })
-        .catch(() => {
-          console.log("Unable to load this conversation");
+        .catch((err) => {
+          toast.error("Can not load this user : " + err, popupOptions);
         });
-    if (target_id > 0) {
-      document.querySelector(".chatArea").scrollTop =
-        document.querySelector(".chatArea").scrollHeight;
+      setFetched(true);
     }
-  }, [target_id]);
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8081/conversation/" + id)
+      .then((res) => {
+        setConversations(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [id]);
 
   const hundleSubmit = (e) => {
-      e.preventDefault();
-      const date1 = new Date()
-      axios
-        .post("http://localhost:8081/send", {target_id, message, date1})
-        .then((res) => {
-          console.log(res);
-          setmessage('');
-        })
-        .catch(() => {
-          console.log("Unable to load this conversation");
-        });
-  }
+    e.preventDefault();
+    const date1 = new Date();
+    axios
+      .post("http://localhost:8081/send", { target_id, message, date1 })
+      .then((res) => {
+        console.log(res.data);
+        setmessage("");
+      })
+      .catch((err) => {
+        toast.error("Unable to send:" + err.code, popupOptions);
+      });
+  };
 
   return (
     <div className="read">
-      {target_id ? (
+      {conversations && targetUser ? (
         <>
           <div className="userInfo">
             <div className="">
@@ -66,11 +77,11 @@ const Conversations = ({ target_id }) => {
             <ChatOptions />
           </div>
           <div className="chatArea">
-            {allConversations.map((msg) => {
+            {conversations.map((msg) => {
               return (
                 <div
                   key={msg.id}
-                  className={msg.from_id == activeUser ? "msg me" : "msg you"}
+                  className={msg.from_id != target_id ? "msg me" : "msg you"}
                 >
                   {msg.content}
                 </div>
@@ -88,13 +99,14 @@ const Conversations = ({ target_id }) => {
                 }}
               />
               <SendEmoji setmessage={setmessage} />
-              <SendOutlined onClick={hundleSubmit} sx={{ cursor: "pointer"}} />
+              <SendOutlined onClick={hundleSubmit} sx={{ cursor: "pointer" }} />
             </form>
           </div>
         </>
       ) : (
         <div className="starting">Open chat to start</div>
       )}
+      <ToastContainer />
     </div>
   );
 };
