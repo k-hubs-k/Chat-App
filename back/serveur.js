@@ -14,7 +14,6 @@ import {
   getConversations,
   sendMessages,
 } from "./utils/conversations.js";
-import sharedsession from "express-socket.io-session";
 
 dotenv.config();
 
@@ -48,34 +47,32 @@ const middleware = session({
 });
 
 app.use(middleware);
-io.use(sharedsession(middleware));
 
-const sessionMiddleware = session({
-  secret: "chatApp",
-  resave: true,
-  saveUninitialized: true,
-});
-
-app.use(sessionMiddleware);
-io.engine.use(sessionMiddleware);
+const socketPath = "/socket";
+io.path(socketPath);
 
 io.on("connection", (socket) => {
-  console.log(socket.request.session);
-  socket.emit("hello", "hey");
-
-  socket.on("desconection", () => {
+  socket.on("disconection", () => {
     socket.disconnect();
+  });
+  socket.on("hey", () => {
+    io.emit("hey", "hello");
+  });
+  socket.on("get messages", (id) => {
+    // id: userActive
+    getConversations(id, (err, conversations) => {
+      if (!err) io.emit("receive message", conversations);
+    });
+  });
+  socket.on("send messages", (_id, _target) => {
+    getChats(_id, _target, (err, conversations) => {
+      if (!err) io.emit("receive message", { conversations, _target });
+    });
   });
 });
 
 app.get("/", (req, res) => {
   return res.json(req.session.userActive);
-});
-
-app.post("/incr", (req, res) => {
-  const session = req.session;
-  session.count = (session.count || 0) + 1;
-  res.status(200).end("" + session.count);
 });
 
 app.post("/login", (req, res) => {

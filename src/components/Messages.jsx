@@ -44,8 +44,8 @@ const Messages = ({ onOpenChat }) => {
             conversation: uniqueData[i].content,
             images: res.images,
           });
+          setConversations(out);
           if (i == uniqueData.length - 1) {
-            setConversations(out);
             setProced(true);
           }
         } else {
