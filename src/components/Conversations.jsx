@@ -16,23 +16,33 @@ import { io } from "socket.io-client";
 
 const Conversations = ({ target_id, handleChange }) => {
   const [conversations, setConversations] = useState([]);
+  const [info, setInfo] = useState({});
   const { id } = useParams();
   const [message, setmessage] = useState([]);
   const [targetUser, setTargetUser] = useState([]);
   const [fetched, setFetched] = useState(false);
-  const [info, setInfo] = useState({});
-
-  const socket = io("http://localhost:8081");
 
   useEffect(() => {
+    const socket = io("http://localhost:8081");
+    if (fetched) {
+      socket.emit("get messages", { id: info.userId, target: id });
+      socket.on("get messages", (msg) => {
+        console.log(msg);
+        console.log("for me");
+        setConversations(msg);
+      });
+      socket.on("receive message", (data) => {
+        console.log(data);
+      });
+    }
     if (!fetched && id) {
       axios
-        .get("http://localhost:8081/")
+        .get("http://localhost:8081")
         .then((res) => {
           setInfo(res.data);
         })
         .catch((err) => {
-          console.log(err.code);
+          console.log("err : ", err.code);
         });
 
       handleChange(id);
@@ -46,58 +56,27 @@ const Conversations = ({ target_id, handleChange }) => {
         });
       setFetched(true);
     }
-  }, []);
-  useEffect(() => {
-    if (!id) return;
-    axios
-      .get("http://localhost:8081/conversation/" + id)
-      .then((res) => {
-        setConversations(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
-
-  useEffect(() => {
-    if (!id) return;
     return () => {
       socket.disconnect();
     };
   }, [id]);
 
   const hundleSubmit = (e) => {
+    if (!fetched) return;
     e.preventDefault();
     const date1 = new Date();
     axios
       .post("http://localhost:8081/send", { target_id, message, date1 })
       .then((res) => {
-        let tmp = conversations;
-        tmp.push({
-          from_id: info.userId,
-          to_id: target_id,
-          content: message,
-        });
-        setConversations(tmp);
-        setmessage("");
-        socket.emit("send messages", info.userId, id);
-
         document.querySelector(".chatArea").scrollTop =
           document.querySelector(".chatArea").scrollHeight;
+        console.log(res);
+        socket.emit("send messages", info.userId, target_id);
       })
       .catch((err) => {
         toast.error("Unable to send:" + err.code, popupOptions);
       });
   };
-
-  socket.on("receive message", (msg) => {
-    if (msg._target == info.userId) {
-      setConversations(msg.conversations);
-
-      document.querySelector(".chatArea").scrollTop =
-        document.querySelector(".chatArea").scrollHeight;
-    }
-  });
 
   return (
     <div className="read">

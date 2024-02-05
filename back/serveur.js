@@ -28,7 +28,7 @@ const io = new Server(httpServer, {
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, process.env.REMOTE_URL],
     methods: ["POST", "GET", "PUT"],
     credentials: true,
   }),
@@ -58,15 +58,19 @@ io.on("connection", (socket) => {
   socket.on("hey", () => {
     io.emit("hey", "hello");
   });
-  socket.on("get messages", (id) => {
-    // id: userActive
-    getConversations(id, (err, conversations) => {
-      if (!err) io.emit("receive message", conversations);
+
+  socket.on("get messages", (data) => {
+    const { id, target } = data;
+    console.log("data : ", data);
+    getChats(id, target, (err, conversations) => {
+      if (!err) io.emit("receive message", { msg: conversations, target: id });
     });
   });
+
   socket.on("send messages", (_id, _target) => {
     getChats(_id, _target, (err, conversations) => {
-      if (!err) io.emit("receive message", { conversations, _target });
+      if (!err)
+        io.emit("receive message", { msg: conversations, target: _target });
     });
   });
 });
