@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import TagFacesOutlinedIcon from "@mui/icons-material/TagFacesOutlined";
 import Picker from "emoji-picker-react";
 
-const SendEmoji = ({ setmessage }) => {
+const SendEmoji = ({ setcontent }) => {
   useEffect(() => {
     document.querySelector(".toggs").style.display = "none";
   }, []);
   const [showEmojis, setShowEmojis] = useState(false);
 
-  const handleShowEmojis = () => {
+  const handleShowEmojis = (e) => {
+    console.log(e.target);
     setShowEmojis(!showEmojis);
     switch (!showEmojis) {
       case true:
@@ -30,18 +31,16 @@ const SendEmoji = ({ setmessage }) => {
           display: "",
         }}
       >
-        {showEmojis && (
           <Picker
             searchDisabled
-            emojiStyle="twiter"
+            emojiStyle="facebook"
             previewConfig={{
               showPreview: false,
             }}
             onEmojiClick={(e) => {
-              setmessage((message) => message + e.emoji);
+              setcontent((message) => message + e.emoji);
             }}
           />
-        )}
       </div>
       <TagFacesOutlinedIcon onClick={handleShowEmojis} className="tag" />
     </span>

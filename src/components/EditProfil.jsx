@@ -14,11 +14,12 @@ function EditProfil() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:8081/profile")
+      .get("http://localhost:8081/profile/")
       .then((res) => {
-        setname(res.data.username);
-        setemail(res.data.email);
-        setpass(res.data.password);
+        console.log(res.data.user);
+        setname(res.data.user.username);
+        setemail(res.data.user.email);
+        setpass(res.data.user.password);
       })
       .catch((err) => {
         toast.error("Errur inside server", popupOptions);

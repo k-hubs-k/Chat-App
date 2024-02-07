@@ -12,7 +12,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({socket}) => {
   const links = [
     { to: "/", component: <QuestionAnswer /> },
     { to: "chat", component: <ChatBubbleOutlineOutlined /> },
@@ -23,6 +23,7 @@ const NavBar = () => {
   ];
 
   const [imgPath, setImgPath] = useState("");
+  const [Count, setCount] = useState(0);
 
   useEffect(() => {
     axios
@@ -35,6 +36,7 @@ const NavBar = () => {
         console.log("error : ", err);
       });
   });
+  
   return (
     <div className="navigation">
       <div className="mobile">
@@ -58,7 +60,7 @@ const NavBar = () => {
           };
           return (
             <li key={key}>
-              <NavLink to={item.to}>{badg(item.component, 6)}</NavLink>
+              <NavLink to={item.to}>{badg(item.component, Count)}</NavLink>
             </li>
           );
         })}

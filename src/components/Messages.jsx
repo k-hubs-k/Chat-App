@@ -8,12 +8,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
 
-const Messages = ({ onOpenChat }) => {
-  const [conversations, setConversations] = useState([]);
+const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
+  const [users, setUsers] = useState([]);
   const [proced, setProced] = useState(false);
-  const handleClick = (_id) => {
-    onOpenChat(_id);
-  };
+
   const filterData = (data) => {
     if (proced) return;
     const seenIds = [];
@@ -44,7 +42,7 @@ const Messages = ({ onOpenChat }) => {
             conversation: uniqueData[i].content,
             images: res.images,
           });
-          setConversations(out);
+          setUsers(out);
           if (i == uniqueData.length - 1) {
             setProced(true);
           }
@@ -59,7 +57,7 @@ const Messages = ({ onOpenChat }) => {
     axios.get("http://localhost:8081/conversation").then((res) => {
       filterData(res.data);
     });
-  }, []);
+  }, [socket, users]);
 
   function getTargetInfo(_id, callback) {
     if (_id) {
@@ -74,7 +72,11 @@ const Messages = ({ onOpenChat }) => {
     }
   }
 
-  return conversations.map((msg) => {
+  const handleClick = (_id) => {
+    onOpenChat(_id);
+  };
+
+  return users.map((msg) => {
     const imgPath = "../../back/public/images/" + msg.images;
     return (
       <NavLink
@@ -106,8 +108,8 @@ const Messages = ({ onOpenChat }) => {
         </ListItem>
         <Divider sx={{ my: 0.5 }} />
       </NavLink>
-    );
-  });
+    )
+  })
 };
 
 export default Messages;

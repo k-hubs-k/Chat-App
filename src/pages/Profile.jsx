@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 
-const Profile = () => {
+const Profile = ({socket}) => {
   const { id } = useParams();
   let userIdToFind = null;
   if (typeof id === "undefined") {
@@ -24,6 +24,11 @@ const Profile = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  console.log(user);
+  useEffect(() => {
+    socket.emit("image", user.images)
+  }, [id]);
 
   return (
     <div className="wrapper">

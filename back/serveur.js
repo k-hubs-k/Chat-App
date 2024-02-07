@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
@@ -7,13 +8,16 @@ import cors from "cors";
 import process from "process";
 import dotenv from "dotenv";
 import { login, register } from "./utils/login.js";
-import { getUser } from "./utils/profile.js";
+import { getAllUsers, getUser, uploadFile } from "./utils/profile.js";
 import { editProfile } from "./utils/profile.js";
 import {
   getChats,
   getConversations,
   sendMessages,
 } from "./utils/conversations.js";
+import { log } from "node:console";
+import multer from "multer";
+import path from "path";
 
 dotenv.config();
 
@@ -35,6 +39,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static("public"));
 
 const middleware = session({
   secret: "secret",
@@ -48,35 +53,60 @@ const middleware = session({
 
 app.use(middleware);
 
+let user = []
+let img = "";
+
 const socketPath = "/socket";
 io.path(socketPath);
 
 io.on("connection", (socket) => {
+
+
   socket.on("disconection", () => {
     socket.disconnect();
   });
-  socket.on("hey", () => {
-    io.emit("hey", "hello");
-  });
 
-  socket.on("get messages", (data) => {
-    const { id, target } = data;
-    console.log("data : ", data);
-    getChats(id, target, (err, conversations) => {
-      if (!err) io.emit("receive message", { msg: conversations, target: id });
-    });
+  socket.on('message', (data) => {
+    console.log(data);
+    io.emit('messageResponse', data);
   });
+  
+  socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
 
-  socket.on("send messages", (_id, _target) => {
-    getChats(_id, _target, (err, conversations) => {
-      if (!err)
-        io.emit("receive message", { msg: conversations, target: _target });
-    });
+  socket.on('newUser', (data) => {
+    user.push(data);
+    io.emit('newUserResponse', user);
   });
 });
 
 app.get("/", (req, res) => {
   return res.json(req.session.userActive);
+});
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname),
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
+app.get("/all", (req, res) => {
+  getAllUsers((err, _res) => {
+    if (err) {
+      return res.json({ Error: "Error inside server" });
+    } else {
+      return res.json(_res);
+    }
+  })
 });
 
 app.post("/login", (req, res) => {
@@ -113,6 +143,7 @@ app.post("/register", (req, res) => {
 
 app.get("/profile", (req, res) => {
   const userId = req.session.userActive.userId;
+  img = req.session.userActive.images;
   if (userId)
     getUser(userId, (err, _res) => {
       if (err) {
@@ -125,6 +156,7 @@ app.get("/profile", (req, res) => {
 
 app.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
+  console.log("id"+userId);
   getUser(userId, (err, _res) => {
     if (err) {
       return res.json({ Error: "Error inside server" });
@@ -180,7 +212,7 @@ app.post("/send", (req, res) => {
   const values = [
     req.session.userActive.userId,
     req.body.target_id,
-    req.body.message,
+    req.body.content,
     req.body.date1,
   ];
   sendMessages(values, (err, result) => {
@@ -204,6 +236,35 @@ app.post("/logout", (req, res) => {
   req.session.destroy();
   return res.json({ Succes: "Disconnected..." });
 });
+
+// ----------------------- mbl ts mety--------------------
+
+app.post("/upload", upload.single("image"), (req, res) => {
+  // const image = req.file.filename;
+  // const ID = req.session.userActive.userId;
+  // console.log(img);
+  // if (fs.existsSync("./public/images/" + img)) {
+  //   fs.unlink("./public/images/" + img, (error) => {
+  //     if (error) {
+  //       console.log(error);
+  //     }
+  //   });
+  //   console.log("succes upload");
+  // } else {
+  //   console.log("This file doesn't exists");
+  // }
+
+  // uploadFile([image,ID], (err, result) => {
+  //   if (err) {
+  //     return res.json(err);
+  //   } else {
+  //     req.session.userActive.images = image;
+  //     return res.json(result);
+  //   }
+  // })
+});
+
+// -------------------------------------------------------
 
 httpServer.listen(PORT, () => {
   console.log(`Server started at port ${PORT} 🚀️`);

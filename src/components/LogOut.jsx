@@ -14,7 +14,8 @@ const LogOut = () => {
       .then((res) => {
         const data = res.data;
         if (data.Succes) {
-          navigate("/");
+          window.location.reload()
+          // navigate("/");
         }
       })
       .catch((err) => {

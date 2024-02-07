@@ -16,7 +16,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const Search = () => {
+const Search = ({socket}) => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [activeUser, setActiveUser] = useState([]);
@@ -54,15 +54,8 @@ const Search = () => {
     axios
       .get("http://localhost:8081/all")
       .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .get("http://localhost:8081")
-      .then((res) => {
-        setActiveUser(res.data);
+        console.log(res);
+        setData(res.data.user);
       })
       .catch((err) => {
         console.log(err);

@@ -20,6 +20,9 @@ import MainMenu from "./pages/MainMenu";
 
 import { useEffect } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:8081");
 
 const Root = () => {
   const navigate = useNavigate();
@@ -38,7 +41,7 @@ const Root = () => {
   }, [navigate]);
   return (
     <div className="container">
-      <NavBar />
+      <NavBar socket={socket} />
       <Outlet />
     </div>
   );
@@ -84,11 +87,11 @@ const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element: <Chat />,
+        element: <Chat socket={socket} />,
         children: [
           {
             path: ":id",
-            element: <Chat />,
+            element: <Chat socket={socket} />,
           },
         ],
       },
@@ -98,25 +101,25 @@ const router = createBrowserRouter([
       },
       {
         path: "search",
-        element: <Search />,
+        element: <Search socket={socket} />,
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <Profile socket={socket} />,
         children: [
           {
             path: ":id",
-            element: <Profile />,
+            element: <Profile socket={socket} />,
           },
         ],
       },
       {
         path: "editprofil",
-        element: <EditProfil />,
+        element: <EditProfil socket={socket} />,
       },
       {
         path: "upload",
-        element: <FileUpdate />,
+        element: <FileUpdate socket={socket} />,
       },
       {
         path: "logout",
