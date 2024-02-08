@@ -5,7 +5,7 @@ import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 
-const Profile = ({socket}) => {
+const Profile = ({ socket }) => {
   const { id } = useParams();
   let userIdToFind = null;
   if (typeof id === "undefined") {
@@ -25,9 +25,8 @@ const Profile = ({socket}) => {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(user);
   useEffect(() => {
-    socket.emit("image", user.images)
+    socket.emit("image", user.images);
   }, [id]);
 
   return (
@@ -59,9 +58,15 @@ const Profile = ({socket}) => {
               <p className="ville">
                 <FmdGoodOutlinedIcon /> Madagascar
               </p>
-              <NavLink to={"../editprofil"} className="edit">
-                <Button variant="contained">Edit</Button>
-              </NavLink>
+              {!id ? (
+                <NavLink to={"../editprofil"} className="edit">
+                  <Button variant="contained">Edit</Button>
+                </NavLink>
+              ) : (
+                <NavLink to={"../chat/" + id} className="edit">
+                  <Button variant="contained">Message</Button>
+                </NavLink>
+              )}
             </div>
             <div className="profil-stats">
               <div className="stats-item">

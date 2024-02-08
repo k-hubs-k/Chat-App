@@ -31,6 +31,7 @@ const SendEmoji = ({ setcontent }) => {
           display: "",
         }}
       >
+        {showEmojis && (
           <Picker
             searchDisabled
             emojiStyle="facebook"
@@ -41,6 +42,7 @@ const SendEmoji = ({ setcontent }) => {
               setcontent((message) => message + e.emoji);
             }}
           />
+        )}
       </div>
       <TagFacesOutlinedIcon onClick={handleShowEmojis} className="tag" />
     </span>

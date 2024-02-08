@@ -11,6 +11,7 @@ import axios from "axios";
 const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
   const [users, setUsers] = useState([]);
   const [proced, setProced] = useState(false);
+  const [activeUser, setActiveUser] = useState({});
 
   const filterData = (data) => {
     if (proced) return;
@@ -40,7 +41,9 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
             username: res.username,
             email: res.email,
             conversation: uniqueData[i].content,
+            from_id: uniqueData[i].from_id,
             images: res.images,
+            seen: uniqueData[i].seen,
           });
           setUsers(out);
           if (i == uniqueData.length - 1) {
@@ -57,7 +60,18 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
     axios.get("http://localhost:8081/conversation").then((res) => {
       filterData(res.data);
     });
+    axios.get("http://localhost:8081/profile/").then((res) => {
+      setActiveUser(res.data.user);
+    });
   }, [socket, users]);
+
+  useEffect(() => {
+    socket.on("messageResponse", () => {
+      axios.get("http://localhost:8081/conversation").then((res) => {
+        filterData(res.data);
+      });
+    });
+  }, []);
 
   function getTargetInfo(_id, callback) {
     if (_id) {
@@ -98,7 +112,9 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
                   component="span"
                   variant="body2"
                   color="text.primary"
+                  className={msg.from_id != activeUser.id ? msg.seen ? "" : "bold" : ""}
                 >
+                  {msg.from_id == activeUser.id ? "you: " : msg.username + ": "}
                   {msg.conversation}
                 </Typography>
                 {"  5min"}
@@ -108,8 +124,8 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
         </ListItem>
         <Divider sx={{ my: 0.5 }} />
       </NavLink>
-    )
-  })
+    );
+  });
 };
 
 export default Messages;

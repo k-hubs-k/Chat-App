@@ -16,7 +16,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const Search = ({socket}) => {
+const Search = ({ socket }) => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [activeUser, setActiveUser] = useState([]);
@@ -32,6 +32,13 @@ const Search = ({socket}) => {
       },
     }),
   };
+
+  useEffect(() => {
+    if (!loading)
+      axios.get("http://localhost:8081/").then((res) => {
+        setActiveUser(res.data);
+      });
+  }, []);
 
   React.useEffect(() => {
     return () => {
@@ -54,7 +61,6 @@ const Search = ({socket}) => {
     axios
       .get("http://localhost:8081/all")
       .then((res) => {
-        console.log(res);
         setData(res.data.user);
       })
       .catch((err) => {
@@ -84,7 +90,8 @@ const Search = ({socket}) => {
         {data
           .filter((resultat) => {
             return (
-              resultat.username.includes(search) && resultat.id != activeUser.id
+              resultat.username.includes(search) &&
+              resultat.id != activeUser.userId
             );
           })
           .map((resultat, index) => {

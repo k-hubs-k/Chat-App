@@ -20,7 +20,10 @@ function FileUpdate() {
 
   const hundlUpload = () => {
     const formdata = new FormData();
-    formdata.append("image", file);
+    const renamedFile = new File([file], data.username + ".png", {
+      type: file.type,
+    });
+    formdata.append("image", renamedFile);
     axios
       .post("http://localhost:8081/upload", formdata, {
         headers: { "Content-Type": "multipart/form-data" },

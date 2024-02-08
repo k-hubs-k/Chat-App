@@ -36,3 +36,15 @@ export function sendMessages(values, callback) {
     return callback(null, { Succes: result });
   });
 }
+
+export function seeMessage(targetId, userId, callback) {
+  const sql =
+    "UPDATE `conversations` SET `seen` = ? WHERE from_id = ? AND to_id = ?";
+  db.query(sql, [1, targetId, userId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(res);
+    }
+  });
+}

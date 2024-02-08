@@ -38,10 +38,9 @@ export function editProfile(currentProfile, callback) {
   });
 }
 
-export function uploadFile(currentfile, callback) {
-  const { image, id } = currentfile;
-  const sql =
-    "UPDATE users SET `images` = ? WHERE id = ?";
+export function uploadProfile(image, id, callback) {
+  console.log(image, id);
+  const sql = "UPDATE users SET `images` = ? WHERE id = ?";
   db.query(sql, [image, id], (err, res) => {
     if (err) {
       callback({ Message: "Error" }, null);

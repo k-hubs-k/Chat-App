@@ -8,11 +8,12 @@ import cors from "cors";
 import process from "process";
 import dotenv from "dotenv";
 import { login, register } from "./utils/login.js";
-import { getAllUsers, getUser, uploadFile } from "./utils/profile.js";
+import { getAllUsers, getUser, uploadProfile } from "./utils/profile.js";
 import { editProfile } from "./utils/profile.js";
 import {
   getChats,
   getConversations,
+  seeMessage,
   sendMessages,
 } from "./utils/conversations.js";
 import { log } from "node:console";
@@ -53,29 +54,25 @@ const middleware = session({
 
 app.use(middleware);
 
-let user = []
+let user = [];
 let img = "";
 
 const socketPath = "/socket";
 io.path(socketPath);
 
 io.on("connection", (socket) => {
-
-
   socket.on("disconection", () => {
     socket.disconnect();
   });
 
-  socket.on('message', (data) => {
-    console.log(data);
-    io.emit('messageResponse', data);
+  socket.on("message", (data) => {
+    io.emit("messageResponse", data);
   });
-  
-  socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
 
-  socket.on('newUser', (data) => {
+  socket.on("typing", (data) => socket.broadcast.emit("typingResponse", data));
+  socket.on("newUser", (data) => {
     user.push(data);
-    io.emit('newUserResponse', user);
+    io.emit("newUserResponse", user);
   });
 });
 
@@ -106,7 +103,7 @@ app.get("/all", (req, res) => {
     } else {
       return res.json(_res);
     }
-  })
+  });
 });
 
 app.post("/login", (req, res) => {
@@ -156,7 +153,7 @@ app.get("/profile", (req, res) => {
 
 app.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
-  console.log("id"+userId);
+  console.log("id" + userId);
   getUser(userId, (err, _res) => {
     if (err) {
       return res.json({ Error: "Error inside server" });
@@ -211,7 +208,7 @@ app.post("/send", (req, res) => {
   if (!req.session.userActive.userId) return;
   const values = [
     req.session.userActive.userId,
-    req.body.target_id,
+    req.body.to_id,
     req.body.content,
     req.body.date1,
   ];
@@ -240,28 +237,39 @@ app.post("/logout", (req, res) => {
 // ----------------------- mbl ts mety--------------------
 
 app.post("/upload", upload.single("image"), (req, res) => {
-  // const image = req.file.filename;
-  // const ID = req.session.userActive.userId;
-  // console.log(img);
-  // if (fs.existsSync("./public/images/" + img)) {
-  //   fs.unlink("./public/images/" + img, (error) => {
-  //     if (error) {
-  //       console.log(error);
-  //     }
-  //   });
-  //   console.log("succes upload");
-  // } else {
-  //   console.log("This file doesn't exists");
-  // }
+  const image = req.file.filename;
+  const ID = req.session.userActive.userId;
+  if (fs.existsSync("./public/images/" + img)) {
+    fs.unlink("./public/images/" + img, (error) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+    console.log("succes upload");
+  } else {
+    console.log("This file doesn't exists");
+  }
 
-  // uploadFile([image,ID], (err, result) => {
-  //   if (err) {
-  //     return res.json(err);
-  //   } else {
-  //     req.session.userActive.images = image;
-  //     return res.json(result);
-  //   }
-  // })
+  uploadProfile(image, ID, (err, result) => {
+    if (err) {
+      return res.json(err);
+    } else {
+      req.session.userActive.images = image;
+      return res.json(result);
+    }
+  });
+});
+
+app.put("/seen/:id", (req, res) => {
+  seeMessage(req.params.id, req.session.userActive.userId, (err, response) => {
+    if (err) {
+      console.log("err : ", err);
+      return res.json(err);
+    } else {
+      console.log(response);
+      return res.json(response);
+    }
+  });
 });
 
 // -------------------------------------------------------
