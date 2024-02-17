@@ -30,61 +30,63 @@ const Profile = ({ socket }) => {
   }, [id]);
 
   return (
-    <div className="wrapper">
-      {user ? (
-        <>
-          <div className="profil-top">
-            <Avatar
-              alt={user.username}
-              src={"../../back/public/images/" + user.images}
-              sx={{ width: "100%", height: "100%", marginBottom: "1rem" }}
-              variant="square"
-            />
-            <NavLink to={"../upload"} className="profilImg">
+    <div className="profile page">
+      <div className="wrapper">
+        {user ? (
+          <>
+            <div className="profil-top">
               <Avatar
                 alt={user.username}
                 src={"../../back/public/images/" + user.images}
                 sx={{ width: "100%", height: "100%", marginBottom: "1rem" }}
+                variant="square"
               />
-            </NavLink>
-          </div>
-          <div className="profil-bottom">
-            <div className="profil-info">
-              <div className="main-info">
-                <h3>{user.username}</h3>
-                <p className="age grey">26</p>
-              </div>
-              <p className="email">{user.email}</p>
-              <p className="ville">
-                <FmdGoodOutlinedIcon /> Madagascar
-              </p>
-              {!id ? (
-                <NavLink to={"../editprofil"} className="edit">
-                  <Button variant="contained">Edit</Button>
-                </NavLink>
-              ) : (
-                <NavLink to={"../chat/" + id} className="edit">
-                  <Button variant="contained">Message</Button>
-                </NavLink>
-              )}
+              <NavLink to={"../upload"} className="profilImg">
+                <Avatar
+                  alt={user.username}
+                  src={"../../back/public/images/" + user.images}
+                  sx={{ width: "100%", height: "100%", marginBottom: "1rem" }}
+                />
+              </NavLink>
             </div>
-            <div className="profil-stats">
-              <div className="stats-item">
-                <p className="stat">38k</p>
-                <p className="grey">followers</p>
+            <div className="profil-bottom">
+              <div className="profil-info">
+                <div className="main-info">
+                  <h3>{user.username}</h3>
+                  <p className="age grey">26</p>
+                </div>
+                <p className="email">{user.email}</p>
+                <p className="ville">
+                  <FmdGoodOutlinedIcon /> Madagascar
+                </p>
+                {!id ? (
+                  <NavLink to={"../editprofil"} className="edit">
+                    <Button variant="contained">Edit</Button>
+                  </NavLink>
+                ) : (
+                  <NavLink to={"../chat/" + id} className="edit">
+                    <Button variant="contained">Message</Button>
+                  </NavLink>
+                )}
               </div>
-              <div className="stats-item">
-                <p className="stat">20k</p>
-                <p className="grey">follow</p>
-              </div>
-              <div className="stats-item">
-                <p className="stat">1.8k</p>
-                <p className="grey">post</p>
+              <div className="profil-stats">
+                <div className="stats-item">
+                  <p className="stat">38k</p>
+                  <p className="grey">followers</p>
+                </div>
+                <div className="stats-item">
+                  <p className="stat">20k</p>
+                  <p className="grey">follow</p>
+                </div>
+                <div className="stats-item">
+                  <p className="stat">1.8k</p>
+                  <p className="grey">post</p>
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      ) : null}
+          </>
+        ) : null}
+      </div>
     </div>
   );
 };

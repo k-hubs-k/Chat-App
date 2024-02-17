@@ -4,36 +4,40 @@ import Messages from "../components/Messages";
 import Conversations from "../components/Conversations.jsx";
 import { useRef } from "react";
 
-const Chat = ({socket}) => {
+const Chat = ({ socket }) => {
   const [idConversation, setIdConversation] = useState(0);
 
   const openConversation = (_id) => {
     setIdConversation(_id);
   };
-  
-  const [typingStatus, setTypingStatus] = useState('');
+
+  const [typingStatus, setTypingStatus] = useState("");
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
-    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [1]);
 
   useEffect(() => {
-    socket.on('typingResponse', (data) => setTypingStatus(data));
+    socket.on("typingResponse", (data) => setTypingStatus(data));
   }, [socket]);
 
   return (
-    <div className="chat">
+    <div className="chat page">
       <div className="messages active">
         <div className="searchBox">
           <input type="text" placeholder="Search" />
         </div>
         <List sx={{ width: "100%", maxWidth: 360 }}>
-          <Messages onOpenChat={openConversation} socket={socket} lastMessageRef={lastMessageRef} />
+          <Messages
+            onOpenChat={openConversation}
+            socket={socket}
+            lastMessageRef={lastMessageRef}
+          />
         </List>
       </div>
-      <Conversations 
+      <Conversations
         target_id={idConversation}
         socket={socket}
         typingStatus={typingStatus}
@@ -44,3 +48,4 @@ const Chat = ({socket}) => {
 };
 
 export default Chat;
+

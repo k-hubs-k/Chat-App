@@ -26,7 +26,7 @@ function EditProfil() {
       });
   }, []);
 
-  const hundlUpdate = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
     axios
       .put("http://localhost:8081/edit", { name, email, pass })
@@ -41,9 +41,9 @@ function EditProfil() {
   };
 
   return (
-    <div className="container">
+    <div className="container page">
       <ToastContainer />
-      <form onSubmit={hundlUpdate} className="login">
+      <form onSubmit={handleUpdate} className="login">
         <h1>Update Profil</h1>
         <TextField
           className="field"

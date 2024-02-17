@@ -57,7 +57,7 @@ const Search = () => {
   };
 
   return (
-    <>
+    <div className="search page">
       <form className="searchBar">
         <TextField
           className="searchbar"
@@ -85,7 +85,7 @@ const Search = () => {
         myFriends={myFriends}
         onRedoFetch={redoFetch}
       />
-    </>
+    </div>
   );
 };
 

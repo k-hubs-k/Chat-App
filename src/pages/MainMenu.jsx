@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const MainMenu = () => {
   return (
-    <div className="mainMenu">
+    <div className="mainMenu page">
       <h1>Welcome here</h1>
       <p>Start chat with friend and the world :p</p>
       <NavLink to="authentification/signIn">Login here</NavLink>
@@ -10,4 +10,4 @@ const MainMenu = () => {
   );
 };
 
-export default MainMenu
+export default MainMenu;
