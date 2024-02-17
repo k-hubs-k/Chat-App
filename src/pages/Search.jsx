@@ -1,63 +1,46 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-// import ico from "../assets/41gYkruZM2L.png";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
-import { NavLink } from "react-router-dom";
-import { green } from "@mui/material/colors";
-import CheckIcon from "@mui/icons-material/Check";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
+import Friends from "../components/Friends";
+import PendingFriends from "../components/PendingFriends";
+import AnotherPeople from "../components/AnotherPeople";
 
-const Search = ({ socket }) => {
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
-  const [activeUser, setActiveUser] = useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const timer = React.useRef();
-
-  const buttonSx = {
-    ...(success && {
-      bgcolor: green[500],
-      "&:hover": {
-        bgcolor: green[700],
-      },
-    }),
-  };
+const Search = () => {
+  const [search, setSearch] = useState(""); // input to search
+  const [data, setData] = useState([]); // Data fetched
+  const [activeUser, setActiveUser] = useState([]); // the information of user active
+  const [loaded, setLoading] = React.useState(false); // Chech if all user is already fetched
+  const [myFriends, setMyfriends] = useState({});
+  const [retry, setRetry] = useState(true);
 
   useEffect(() => {
-    if (!loading)
+    // Start to get the user active informations
+    if (!loaded) {
       axios.get("http://localhost:8081/").then((res) => {
         setActiveUser(res.data);
+        setLoading(true);
       });
-  }, []);
-
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
-  const handleButtonClick = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
     }
+  }, []);
+  useEffect(() => {
+    // Get user friend
+    axios
+      .get("http://localhost:8081/friend")
+      .then((res) => {
+        setMyfriends(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [retry]);
+
+  const redoFetch = () => {
+    setRetry(false);
   };
 
+  // get all users
   useEffect(() => {
+    // Getting all users
     axios
       .get("http://localhost:8081/all")
       .then((res) => {
@@ -68,7 +51,7 @@ const Search = ({ socket }) => {
       });
   }, []);
 
-  const hundleSearch = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
@@ -80,75 +63,28 @@ const Search = ({ socket }) => {
           className="searchbar"
           required
           value={search}
-          onChange={hundleSearch}
+          onChange={handleSearch}
           label="Search"
           variant="outlined"
         />
         {/* <img src={ico} alt="search icon" className="searchBtn" /> */}
       </form>
-      <List sx={{ width: "100%", maxWidth: 400 }}>
-        {data
-          .filter((resultat) => {
-            return (
-              resultat.username.includes(search) &&
-              resultat.id != activeUser.userId
-            );
-          })
-          .map((resultat, index) => {
-            return (
-              <NavLink
-                to={"/chatApp/profile/" + resultat.id}
-                className="message"
-                key={index}
-              >
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={resultat.username}
-                      src={"http://localhost:8081/images/" + resultat.images}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={resultat.username}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline", overflow: "hidden" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          3k followers
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                  {/* <CircularProgressWithLabel /> */}
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box sx={{ m: 1, position: "relative" }}>
-                      <div onClick={handleButtonClick}>
-                        {success ? <CheckIcon /> : <PersonAddOutlinedIcon />}
-                      </div>
-                      {loading && (
-                        <CircularProgress
-                          size={38}
-                          sx={{
-                            color: green[500],
-                            position: "absolute",
-                            top: -6,
-                            left: -6,
-                            zIndex: 1,
-                          }}
-                        />
-                      )}
-                    </Box>
-                  </Box>
-                </ListItem>
-                <Divider sx={{ my: 0.5 }} />
-              </NavLink>
-            );
-          })}
-      </List>
+      <h4>Friends : </h4>
+      <Friends myFriends={myFriends} activeUser={activeUser} />
+      <h4>Pending : </h4>
+      <PendingFriends
+        myFriends={myFriends}
+        activeUser={activeUser}
+        search={search}
+      />
+      <h4>Another person : </h4>
+      <AnotherPeople
+        data={data}
+        search={search}
+        activeUser={activeUser}
+        myFriends={myFriends}
+        onRedoFetch={redoFetch}
+      />
     </>
   );
 };

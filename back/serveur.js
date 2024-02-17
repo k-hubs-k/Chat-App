@@ -16,9 +16,9 @@ import {
   seeMessage,
   sendMessages,
 } from "./utils/conversations.js";
-import { log } from "node:console";
 import multer from "multer";
 import path from "path";
+import { GetFriends, AddFriend, updateFriend } from "./utils/friend.js";
 
 dotenv.config();
 
@@ -153,7 +153,6 @@ app.get("/profile", (req, res) => {
 
 app.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
-  console.log("id" + userId);
   getUser(userId, (err, _res) => {
     if (err) {
       return res.json({ Error: "Error inside server" });
@@ -273,6 +272,42 @@ app.put("/seen/:id", (req, res) => {
 });
 
 // -------------------------------------------------------
+
+// Friend
+
+app.get("/friend", (req, res) => {
+  GetFriends(req.session.userActive.userId, (err, response) => {
+    if (err) {
+      console.log(err);
+      return res.json({ Error: err.code });
+    } else if (response.length == 0) {
+      return res.json({ Friend: "Empty" });
+    }
+    return res.json(response);
+  });
+});
+
+app.post("/addFriend/:id", (req, res) => {
+  const targetId = req.params.id;
+  AddFriend(req.session.userActive.userId, targetId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.json({ Error: err.code });
+    } else {
+      return res.json({ result });
+    }
+  });
+});
+
+app.put("/confirm/:id", (req, res) => {
+  updateFriend(req.params.id, (err, result) => {
+    if (err) {
+      return res.json({ Error: err.code });
+    } else {
+      return res.json({ Succes: result });
+    }
+  });
+});
 
 httpServer.listen(PORT, () => {
   console.log(`Server started at port ${PORT} 🚀️`);
