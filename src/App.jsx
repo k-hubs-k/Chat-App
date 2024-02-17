@@ -1,8 +1,6 @@
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import NavBar from "./components/NavBar";
-import FileUpdate from "./FileUpload";
+import { Suspense, lazy, useEffect } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
 
 import {
   Outlet,
@@ -10,17 +8,19 @@ import {
   createBrowserRouter,
   useNavigate,
 } from "react-router-dom";
-import Chat from "./pages/Chat";
-import Settings from "./pages/Settings";
-import Search from "./pages/Search";
-import Profile from "./pages/Profile";
-import EditProfil from "./components/EditProfil";
-import LogOut from "./components/LogOut";
-import MainMenu from "./pages/MainMenu";
 
-import { useEffect } from "react";
-import axios from "axios";
-import { io } from "socket.io-client";
+const SignIn = lazy(() => import("./pages/SignIn"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const Home = lazy(() => import("./pages/Home"));
+const NavBar = lazy(() => import("./components/NavBar"));
+const FileUpdate = lazy(() => import("./FileUpload"));
+const Chat = lazy(() => import("./pages/Chat"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Search = lazy(() => import("./pages/Search"));
+const Profile = lazy(() => import("./pages/Profile"));
+const EditProfil = lazy(() => import("./components/EditProfil"));
+const MainMenu = lazy(() => import("./pages/MainMenu"));
+const LogOut = lazy(() => import("./components/LogOut"));
 
 const socket = io("http://localhost:8081");
 
@@ -83,47 +83,87 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />,
+        element: (
+          <Suspense>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: "chat",
-        element: <Chat socket={socket} />,
+        element: (
+          <Suspense>
+            <Chat socket={socket} />
+          </Suspense>
+        ),
         children: [
           {
             path: ":id",
-            element: <Chat socket={socket} />,
+            element: (
+              <Suspense>
+                <Chat socket={socket} />
+              </Suspense>
+            ),
           },
         ],
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: (
+          <Suspense>
+            <Settings />
+          </Suspense>
+        ),
       },
       {
         path: "search",
-        element: <Search socket={socket} />,
+        element: (
+          <Suspense>
+            <Search socket={socket} />
+          </Suspense>
+        ),
       },
       {
         path: "profile",
-        element: <Profile socket={socket} />,
+        element: (
+          <Suspense>
+            <Profile socket={socket} />
+          </Suspense>
+        ),
         children: [
           {
             path: ":id",
-            element: <Profile socket={socket} />,
+            element: (
+              <Suspense>
+                <Profile socket={socket} />
+              </Suspense>
+            ),
           },
         ],
       },
       {
         path: "editprofil",
-        element: <EditProfil socket={socket} />,
+        element: (
+          <Suspense>
+            <EditProfil socket={socket} />
+          </Suspense>
+        ),
       },
       {
         path: "upload",
-        element: <FileUpdate socket={socket} />,
+        element: (
+          <Suspense>
+            <FileUpdate socket={socket} />
+          </Suspense>
+        ),
       },
       {
         path: "logout",
-        element: <LogOut />,
+        element: (
+          <Suspense>
+            <LogOut />
+          </Suspense>
+        ),
       },
     ],
   },
@@ -133,11 +173,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "signIn",
-        element: <SignIn />,
+        element: (
+          <Suspense>
+            <SignIn />
+          </Suspense>
+        ),
       },
       {
         path: "signUp",
-        element: <SignUp />,
+        element: (
+          <Suspense>
+            <SignUp />
+          </Suspense>
+        ),
       },
     ],
   },
