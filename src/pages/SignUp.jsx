@@ -10,19 +10,23 @@ import popupOptions from "../utils/toastOptions";
 
 // CSS
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "../components/Loading";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [isSubmiting, setIsSubmiting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmiting(true);
 
     if (password !== confirm) {
       toast.error("Password and confirm must be same.", popupOptions);
+      setIsSubmiting(false);
       return;
     }
 
@@ -45,6 +49,7 @@ const SignUp = () => {
         } else {
           toast.warning("Error : " + data.Warning, popupOptions);
         }
+        setIsSubmiting(false);
       })
       .catch((err) => {
         toast.error("Error : " + err, popupOptions);
@@ -53,50 +58,58 @@ const SignUp = () => {
 
   return (
     <div className="container">
-      <form method="post" onSubmit={handleSubmit} className="login">
-        <h1>Register</h1>
-        <TextField
-          className="field"
-          required
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
-          label="Username"
-          variant="outlined"
-        />
-        <TextField
-          className="field"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          type="email"
-          label="Email"
-          variant="outlined"
-        />
-        <TextField
-          className="field"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type="password"
-          label="Password"
-          variant="outlined"
-        />
-        <TextField
-          className="field"
-          required
-          onChange={(e) => setConfirm(e.target.value)}
-          value={confirm}
-          type="password"
-          label="Confirm Password"
-          variant="outlined"
-        />
-        <div className="otherActions">
-          <NavLink to="/authentification/signIn">Aleready have account</NavLink>
-        </div>
-        <Button type="submit" variant="contained">
-          Register
-        </Button>
-      </form>
+      {isSubmiting ? (
+        <Loading />
+      ) : (
+        <>
+          <form method="post" onSubmit={handleSubmit} className="login">
+            <h1>Register</h1>
+            <TextField
+              className="field"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              label="Username"
+              variant="outlined"
+            />
+            <TextField
+              className="field"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              type="email"
+              label="Email"
+              variant="outlined"
+            />
+            <TextField
+              className="field"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              label="Password"
+              variant="outlined"
+            />
+            <TextField
+              className="field"
+              required
+              onChange={(e) => setConfirm(e.target.value)}
+              value={confirm}
+              type="password"
+              label="Confirm Password"
+              variant="outlined"
+            />
+            <div className="otherActions">
+              <NavLink to="/authentification/signIn">
+                Aleready have account
+              </NavLink>
+            </div>
+            <Button type="submit" variant="contained">
+              Register
+            </Button>
+          </form>
+        </>
+      )}
       <ToastContainer />
     </div>
   );

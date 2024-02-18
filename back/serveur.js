@@ -81,10 +81,10 @@ app.get("/", (req, res) => {
 });
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, "public/images");
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     cb(
       null,
       file.fieldname + "_" + Date.now() + path.extname(file.originalname),
@@ -96,7 +96,7 @@ const upload = multer({
   storage: storage,
 });
 
-app.get("/all", (req, res) => {
+app.get("/all", (_req, res) => {
   getAllUsers((err, _res) => {
     if (err) {
       return res.json({ Error: "Error inside server" });

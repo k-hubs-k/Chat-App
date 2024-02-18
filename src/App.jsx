@@ -9,6 +9,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import Loading from "./components/Loading";
 const SignIn = lazy(() => import("./pages/SignIn"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const Home = lazy(() => import("./pages/Home"));
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
       {
         path: "",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Home />
           </Suspense>
         ),
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
       {
         path: "chat",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Chat socket={socket} />
           </Suspense>
         ),
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
           {
             path: ":id",
             element: (
-              <Suspense>
+              <Suspense fallback={<Loading />}>
                 <Chat socket={socket} />
               </Suspense>
             ),
@@ -110,7 +111,7 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Settings />
           </Suspense>
         ),
@@ -118,7 +119,7 @@ const router = createBrowserRouter([
       {
         path: "search",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Search socket={socket} />
           </Suspense>
         ),
@@ -126,7 +127,7 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <Profile socket={socket} />
           </Suspense>
         ),
@@ -134,7 +135,7 @@ const router = createBrowserRouter([
           {
             path: ":id",
             element: (
-              <Suspense>
+              <Suspense fallback={<Loading />}>
                 <Profile socket={socket} />
               </Suspense>
             ),
@@ -144,7 +145,7 @@ const router = createBrowserRouter([
       {
         path: "editprofil",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <EditProfil socket={socket} />
           </Suspense>
         ),
@@ -152,7 +153,7 @@ const router = createBrowserRouter([
       {
         path: "upload",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <FileUpdate socket={socket} />
           </Suspense>
         ),
@@ -160,7 +161,7 @@ const router = createBrowserRouter([
       {
         path: "logout",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <LogOut />
           </Suspense>
         ),
@@ -174,7 +175,7 @@ const router = createBrowserRouter([
       {
         path: "signIn",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <SignIn />
           </Suspense>
         ),
@@ -182,7 +183,7 @@ const router = createBrowserRouter([
       {
         path: "signUp",
         element: (
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <SignUp />
           </Suspense>
         ),
