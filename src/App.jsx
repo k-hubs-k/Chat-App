@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useLayoutEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 
@@ -22,12 +22,13 @@ const Profile = lazy(() => import("./pages/Profile"));
 const EditProfil = lazy(() => import("./components/EditProfil"));
 const MainMenu = lazy(() => import("./pages/MainMenu"));
 const LogOut = lazy(() => import("./components/LogOut"));
+const UrlErrorPage = lazy(() => import("./components/UrlErrorPage"));
 
 const socket = io("http://localhost:8081");
 
 const Root = () => {
   const navigate = useNavigate();
-  useEffect(() => {
+  useLayoutEffect(() => {
     axios
       .get("http://localhost:8081/")
       .then((res) => {
@@ -39,7 +40,7 @@ const Root = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [navigate]);
+  }, []);
   return (
     <div className="container">
       <NavBar socket={socket} />
@@ -61,7 +62,7 @@ const WelcomePage = () => {
 axios.defaults.withCredentials = true;
 const AuthentificationPage = () => {
   const navigate = useNavigate();
-  useEffect(() => {
+  useLayoutEffect(() => {
     axios
       .get("http://localhost:8081/")
       .then((res) => {
@@ -81,6 +82,11 @@ const router = createBrowserRouter([
   {
     path: "chatApp",
     element: <Root />,
+    errorElement: (
+      <Suspense>
+        <UrlErrorPage />
+      </Suspense>
+    ),
     children: [
       {
         path: "",
@@ -171,6 +177,11 @@ const router = createBrowserRouter([
   {
     path: "authentification",
     element: <AuthentificationPage />,
+    errorElement: (
+      <Suspense>
+        <UrlErrorPage />
+      </Suspense>
+    ),
     children: [
       {
         path: "signIn",
@@ -193,6 +204,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <WelcomePage />,
+    errorElement: (
+      <Suspense>
+        <UrlErrorPage />
+      </Suspense>
+    ),
   },
 ]);
 

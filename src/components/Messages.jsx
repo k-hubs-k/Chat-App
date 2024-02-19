@@ -8,7 +8,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import axios from "axios";
 
-const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
+/**
+ * @param {Function} onOpenChat
+ * @param {Function} onChangePage
+ */
+
+const Messages = ({ onOpenChat, socket, lastMessageRef, onChangePage }) => {
   const [users, setUsers] = useState([]);
   const [proced, setProced] = useState(false);
   const [activeUser, setActiveUser] = useState({});
@@ -88,6 +93,7 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
 
   const handleClick = (_id) => {
     onOpenChat(_id);
+    onChangePage(true);
   };
 
   return users.map((msg) => {
@@ -112,7 +118,9 @@ const Messages = ({ onOpenChat, socket, lastMessageRef }) => {
                   component="span"
                   variant="body2"
                   color="text.primary"
-                  className={msg.from_id != activeUser.id ? msg.seen ? "" : "bold" : ""}
+                  className={
+                    msg.from_id != activeUser.id ? (msg.seen ? "" : "bold") : ""
+                  }
                 >
                   {msg.from_id == activeUser.id ? "you: " : msg.username + ": "}
                   {msg.conversation}

@@ -2,6 +2,7 @@
 import ChatOptions from "./ChatOptions";
 import Avatar from "@mui/material/Avatar";
 import Send from "./Send";
+import ArrowLeft from "@mui/icons-material/ArrowLeft";
 
 // react
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -10,25 +11,37 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+/**
+ * @param {number} target_id
+ * @param {number} lastMessageRef
+ * @param {boolean} typingStatus
+ * */
+
 const Conversations = ({
   target_id: target_id,
   socket,
   lastMessageRef,
   typingStatus,
+  onChangePage,
 }) => {
   const [messages, setmessages] = useState([]);
   const [targetInfo, setTargetInfo] = useState({});
   const { id } = useParams();
   const [seen, setSeen] = useState(false);
   const [targetId, setTargetId] = useState(target_id);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:8081/profile/" + targetId).then((res) => {
       setTargetInfo(res.data);
+      setLoaded(true);
     });
   }, []);
 
   useEffect(() => {
+    if (id) {
+      onChangePage(true);
+    }
     axios
       .get("http://localhost:8081/conversation/" + id)
       .then((res) => {
@@ -56,26 +69,26 @@ const Conversations = ({
 
   return (
     <div className="read">
-      {targetId ? (
+      {targetId && loaded ? (
         <>
           <div className="userInfo">
+            <div className="close" onClick={() => onChangePage(false)}>
+              <ArrowLeft />
+            </div>
             <div className="">
               <Avatar
                 alt="Remy Sharp"
-                src={
-                  "../../back/public/images/" + targetInfo.images ||
-                  "user-default.png"
-                }
+                src={`../../back/public/images/" + ${targetInfo.user.images || "user-default.png"}`}
               />
             </div>
-            <p className="name">{targetInfo.username}</p>
+            <p className="name">{targetInfo.user.username || "loading..."}</p>
             <ChatOptions />
           </div>
           <div className="chatArea">
             {messages.length > 0 ? (
               messages.map((msg, key) => {
                 return (
-                  <>
+                  <div key={key} className="messageContent">
                     <div
                       key={key}
                       className={msg.to_id == targetId ? "msg me" : "msg you"}
@@ -83,7 +96,7 @@ const Conversations = ({
                       {msg.content}
                     </div>
                     <div ref={lastMessageRef} />
-                  </>
+                  </div>
                 );
               })
             ) : (

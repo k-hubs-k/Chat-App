@@ -102,6 +102,23 @@
       padding: 10px;
       border-radius: 10px;
 
+      .close {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 5px;
+
+        &:hover,
+        &:focus {
+          background: rgba(50, 50, 93, 0.1);
+        }
+
+        svg {
+          font-size: 2rem;
+        }
+      }
+
       .profile {
         position: relative;
         width: 50px;
@@ -141,6 +158,13 @@
       gap: 10px;
       padding: 10px;
       height: calc(100% - 170px);
+
+      .messageContent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
 
       .msg {
         padding: 10px;
@@ -228,7 +252,7 @@
 
     .read,
     .messages {
-      display: none;
+      // display: none;
 
       &.active {
         display: flex;
